@@ -1,6 +1,8 @@
 public class RedBlackTree implements SelfBalancedBST {
     private RedBlackNode root;
     private int size = 0;
+    public static final boolean RED = false;
+    public static final boolean BLACK = true;
 
     public RedBlackNode getRoot() {
         return root;
@@ -20,12 +22,49 @@ public class RedBlackTree implements SelfBalancedBST {
         if(exist){
             return false; // the key is already found. No insertion
         }else{
-            RedBlackNode insertedNode = insertHelper(root, key);
+            RedBlackNode insertedNode = insertBST(root, key);
+            if(size == 1){
+                insertedNode.color = BLACK; // root node with color = black
+            }else if(size > 1){
+                // more than one node are found
+                insertedNode.color = RED;
+                RedBlackNode parent = insertedNode.parent;
+                RedBlackNode grandParent = parent.parent;
+                if(grandParent == null){
+                    // parent is the root node which is BLACK so no problem
+                    return true;
+                }
+                if(parent.color == BLACK){
+                    return true;
+                }else {
+//                    insertedNode.parent.color == RED
+                    RedBlackNode uncle = null;
+                    if(isLeftChild(parent)){
+                        uncle = grandParent.right;
+                    }else{
+                        uncle = grandParent.left;
+                    }
+                    if(uncle == null || uncle.color == BLACK){
+                        // do suitable rotation and recolor child and grandparent
+                    }else{
+                        // uncle.color == RED
+                        // recolor and recheck if the grandparent is the root node or not {recursion}
+
+                    }
+                }
+            }
             return true;
         }
     }
 
-    private RedBlackNode insertHelper(RedBlackNode node, Object key) {
+    private boolean isLeftChild(RedBlackNode node){
+        return node.parent.left == node;
+    }
+    private boolean isRightChild(RedBlackNode node){
+        return node.parent.right == node;
+    }
+
+    private RedBlackNode insertBST(RedBlackNode node, Object key) {
         RedBlackNode nodeToBeInserted = new RedBlackNode(key);
         if(size == 0){
             root = nodeToBeInserted;
@@ -45,7 +84,7 @@ public class RedBlackTree implements SelfBalancedBST {
                 size++;
                 return nodeToBeInserted;
             }
-            return insertHelper(node.left, key);
+            return insertBST(node.left, key);
         }
         else{
             // node key < key
@@ -57,7 +96,7 @@ public class RedBlackTree implements SelfBalancedBST {
                 size++;
                 return nodeToBeInserted;
             }
-            return insertHelper(node.right, key);
+            return insertBST(node.right, key);
         }
 
     }
@@ -103,7 +142,7 @@ public class RedBlackTree implements SelfBalancedBST {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
@@ -112,55 +151,48 @@ public class RedBlackTree implements SelfBalancedBST {
     }
 
     private void rotateLeft(RedBlackNode node) {
-        RedBlackNode temp=node.right;
-        if(temp==null) {
+        RedBlackNode temp = node.right;
+        if(temp == null) {
             return;
         }
-        temp.parent=node.parent;
-        if(node.parent!=null) {
+        temp.parent = node.parent;
+        if(node.parent != null) {
             //if node.parent==null then temp is new root
-            if(node.parent.left==node) node.parent.left=temp;
-            else node.parent.right=temp;
+            if(node.parent.left == node) node.parent.left=temp;
+            else node.parent.right = temp;
         }
-        node.parent=temp;
-        node.right=temp.left;
-        if(temp.left!=null) {
-            temp.left.parent=node;
+        node.parent = temp;
+        node.right = temp.left;
+        if(temp.left != null) {
+            temp.left.parent = node;
         }
-        temp.left=node;
+        temp.left = node;
 
-        if(temp.parent==null) root=temp;
+        if(temp.parent == null) root=temp;
     }
+
     public void rotateRight(RedBlackNode node){
         RedBlackNode temp = node.left;
-        if(temp==null) {
+        if(temp == null) {
             return;
         }
         temp.parent=node.parent;
-        if(node.parent!=null) {
+        if(node.parent != null) {
             //if node.parent==null then temp is new root
-            if(node.parent.left==node) node.parent.left=temp;
-            else node.parent.right=temp;
+            if(node.parent.left == node) node.parent.left = temp;
+            else node.parent.right = temp;
         }
-        node.parent=temp;
+        node.parent = temp;
         node.left = temp.right;
-        if(temp.right!=null) {
-            temp.right.parent=node;
+        if(temp.right != null) {
+            temp.right.parent = node;
         }
-        temp.right=node;
-        if(temp.parent==null) root=temp;
+        temp.right = node;
+        if(temp.parent == null) root=temp;
 
     }
 
     private void printTree(RedBlackNode node){
-//        if(node.right!=null){
-//            printTree(root.right);
-//        }
-//        System.out.println(node.key);
-//        if(root.left!=null){
-//            printTree(root.left);
-//        }
-//        return;
         if(node != null)
         {
             System.out.println(node.key);
