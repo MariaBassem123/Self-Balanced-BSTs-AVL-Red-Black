@@ -19,7 +19,8 @@ You are required to implement both AVL and Red Black trees that can deal with ke
 3. Search: Takes a key and searches for it returning true if it is found in the tree and false otherwise. Must run in O(log n).
 4. Size: Returns the number of keys in the tree. Must run in O(1).
 5. Height: Returns the height of the tree which is the longest path from the root to a leaf node. Can run up to O(n).
-6. Application: English Dictionary
+
+### 2. Application: English Dictionary
 
 As an application based on the 2 self balanced binary search trees implementation, you are required to implement a simple English dictionary supporting the following functionalities:
 
