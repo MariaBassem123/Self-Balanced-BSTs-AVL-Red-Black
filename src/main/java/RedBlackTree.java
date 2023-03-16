@@ -2,6 +2,14 @@ public class RedBlackTree implements SelfBalancedBST {
     private RedBlackNode root;
     private int size = 0;
 
+    public RedBlackNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(RedBlackNode root) {
+        this.root = root;
+    }
+
     public int getSize() {
         return size;
     }
@@ -103,6 +111,47 @@ public class RedBlackTree implements SelfBalancedBST {
         return 0;
     }
 
+    private void rotateLeft(RedBlackNode node) {
+        RedBlackNode temp=node.right;
+        if(temp==null) {
+            return;
+        }
+        temp.parent=node.parent;
+        if(node.parent!=null) {
+            //if node.parent==null then temp is new root
+            if(node.parent.left==node) node.parent.left=temp;
+            else node.parent.right=temp;
+        }
+        node.parent=temp;
+        node.right=temp.left;
+        if(temp.left!=null) {
+            temp.left.parent=node;
+        }
+        temp.left=node;
+
+        if(temp.parent==null) root=temp;
+    }
+    public void rotateRight(RedBlackNode node){
+        RedBlackNode temp = node.left;
+        if(temp==null) {
+            return;
+        }
+        temp.parent=node.parent;
+        if(node.parent!=null) {
+            //if node.parent==null then temp is new root
+            if(node.parent.left==node) node.parent.left=temp;
+            else node.parent.right=temp;
+        }
+        node.parent=temp;
+        node.left = temp.right;
+        if(temp.right!=null) {
+            temp.right.parent=node;
+        }
+        temp.right=node;
+        if(temp.parent==null) root=temp;
+
+    }
+
     private void printTree(RedBlackNode node){
 //        if(node.right!=null){
 //            printTree(root.right);
@@ -114,8 +163,8 @@ public class RedBlackTree implements SelfBalancedBST {
 //        return;
         if(node != null)
         {
-            printTree(node.left);
             System.out.println(node.key);
+            printTree(node.left);
             printTree(node.right);
         }
     }
@@ -125,6 +174,19 @@ public class RedBlackTree implements SelfBalancedBST {
         tree.insert("hi");
         tree.insert("bye");
         tree.insert("yyy");
+        tree.insert("tree");
+        tree.insert("code");
+        tree.insert("dye");
+        tree.insert("g");
+        tree.insert("e");
+        tree.insert("zb");
+        tree.insert("za");
+        tree.insert("zz");
+        tree.insert("s");
+        tree.insert("u");
+        tree.printTree(tree.root);
+        tree.rotateRight(tree.root.right);
+        System.out.println(" ");
         tree.printTree(tree.root);
 
         Object key = "bye";
