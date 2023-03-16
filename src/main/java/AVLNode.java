@@ -1,4 +1,4 @@
-public class AVLNode {
+public class AVLNode{
     int key;
     AVLNode left;
     AVLNode right;
@@ -9,4 +9,5 @@ public class AVLNode {
         left = right = null;
         height = 0;
     }
+
 }
