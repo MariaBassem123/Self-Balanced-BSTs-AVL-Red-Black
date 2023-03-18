@@ -42,17 +42,49 @@ public class AVLTree implements SelfBalancedBST{
         return 0;
     }
 
-    private AVLNode BSTInsert(AVLNode root, int key){
-        if(root == null){
+    private AVLNode Rotation(AVLNode node){
+        int balance = checkBalance(node);
+        if(balance > 1){
+            //right rotate
+            System.out.println("right rotate");
+        }
+        else if (balance < -1){
+            //left rotate
+            System.out.println("left rotate");
+        }
+        return node;
+    }
+    private int checkBalance(AVLNode node){
+        int balance = 0;
+        if (node != null){
+            int leftHeight = (node.left != null) ? node.left.height : 0;
+            int rightHeight = (node.right != null) ? node.right.height : 0;
+            balance = leftHeight - rightHeight;
+        }
+        return balance;
+    }
+    private void updateHeight(AVLNode node){
+        int leftHeight = node.left != null ? node.left.height : 0;
+        int rightHeight = node.right != null ? node.right.height : 0;
+        int height = Math.max(leftHeight, rightHeight) + 1;
+        node.setHeight(height);
+        System.out.println("key = " + node.key + " - its height = " + height);
+    }
+    private AVLNode BSTInsert(AVLNode node, int key){
+        if(node == null){
             return new AVLNode(key);
         }
-        if(key > root.key){//insertion to the right
-            root.right = BSTInsert(root.right, key);
+        if(key > node.key){//insertion to the right
+            node.right = BSTInsert(node.right, key);
+            updateHeight(node.right);
         }
-        else if (key < root.key){//insertion to the left
-            root.left = BSTInsert(root.left, key);
+        else if (key < node.key){//insertion to the left
+            node.left = BSTInsert(node.left, key);
+            updateHeight(node.left);
         }
-        return root;
+        updateHeight(node);
+        Rotation(node);
+        return node;
     }
     void traverse(AVLNode root)//inorder traversal
     {
@@ -68,12 +100,17 @@ public class AVLTree implements SelfBalancedBST{
     }
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
-        tree.insert(4);
+        tree.insert(10);
         tree.insert(5);
-        tree.insert(7);
-        tree.insert(6);
+        tree.insert(3);
+        tree.insert(2);
+        tree.insert(4);
         tree.insert(8);
-        tree.insert(1);;
+        tree.insert(7);
+        tree.insert(9);
+        tree.insert(15);
+        tree.insert(14);
+        tree.insert(16);
         tree.traverse(tree.root);
         if(tree.search(7)){
             System.out.println("YES");

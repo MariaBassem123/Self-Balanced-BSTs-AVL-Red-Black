@@ -9,5 +9,7 @@ public class AVLNode{
         left = right = null;
         height = 0;
     }
-
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }
