@@ -1,9 +1,20 @@
-public class AVLTree implements SelfBalancedBST{
+import java.util.ArrayList;
+import java.util.List;
+
+public class AVLTree implements SelfBalancedBST {
     private AVLNode root;
     private int size = 0;
+
+    public AVLTree() {
+    }
+
+    public AVLTree(List<Object> list) {
+        this.root = ALToBST(list, 0, list.size());
+    }
+
     @Override
     public boolean insert(Object key) {
-        root = BSTInsert(root, (int)key);
+        root = BSTInsert(root, (int) key);
         size += 1;
         return false;
     }
@@ -15,7 +26,7 @@ public class AVLTree implements SelfBalancedBST{
 
     @Override
     public boolean search(Object key) {
-        return searchRecursive(root, (int)key);
+        return searchRecursive(root, (int) key);
     }
 
     private boolean searchRecursive(AVLNode node, int key) {
@@ -42,43 +53,48 @@ public class AVLTree implements SelfBalancedBST{
         return 0;
     }
 
-    private AVLNode Rotation(AVLNode node){
+    public ArrayList<Object> inorder() {
+        return null;
+    }
+
+    private AVLNode Rotation(AVLNode node) {
         int balance = checkBalance(node);
-        if(balance > 1){
+        if (balance > 1) {
             //right rotate
             System.out.println("right rotate");
-        }
-        else if (balance < -1){
+        } else if (balance < -1) {
             //left rotate
             System.out.println("left rotate");
         }
         return node;
     }
-    private int checkBalance(AVLNode node){
+
+    private int checkBalance(AVLNode node) {
         int balance = 0;
-        if (node != null){
+        if (node != null) {
             int leftHeight = (node.left != null) ? node.left.height : 0;
             int rightHeight = (node.right != null) ? node.right.height : 0;
             balance = leftHeight - rightHeight;
         }
         return balance;
     }
-    private void updateHeight(AVLNode node){
+
+    private void updateHeight(AVLNode node) {
         int leftHeight = node.left != null ? node.left.height : 0;
         int rightHeight = node.right != null ? node.right.height : 0;
         int height = Math.max(leftHeight, rightHeight) + 1;
         node.setHeight(height);
         System.out.println("key = " + node.key + " - its height = " + height);
     }
-    private AVLNode BSTInsert(AVLNode node, int key){
-        if(node == null){
+
+    private AVLNode BSTInsert(AVLNode node, int key) {
+        if (node == null) {
             return new AVLNode(key);
         }
-        if(key > node.key){//insertion to the right
+        if (key > node.key) {//insertion to the right
             node.right = BSTInsert(node.right, key);
             updateHeight(node.right);
-        }
-        else if (key < node.key){//insertion to the left
+        } else if (key < node.key) {//insertion to the left
             node.left = BSTInsert(node.left, key);
             updateHeight(node.left);
         }
@@ -86,18 +102,30 @@ public class AVLTree implements SelfBalancedBST{
         Rotation(node);
         return node;
     }
+
     void traverse(AVLNode root)//inorder traversal
     {
-        if (root == null){
+        if (root == null) {
             return;
         }
         // Recurse on left subtree
         traverse(root.left);
         // Add node data to sum
-        System.out.println(root.key +" ");
+        System.out.println(root.key + " ");
         // Recurse on right subtree
         traverse(root.right);
     }
+
+    private AVLNode ALToBST(List<Object> list, int start, int end) {
+        if (start > end)
+            return null;
+        int mid = (end - start) / 2;
+        AVLNode node = new AVLNode(mid);// mid -> list.get(mid)
+        node.left = ALToBST(list, start, mid - 1);
+        node.right = ALToBST(list, mid + 1, end);
+        return node;
+    }
+
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
         tree.insert(10);
@@ -112,9 +140,9 @@ public class AVLTree implements SelfBalancedBST{
         tree.insert(14);
         tree.insert(16);
         tree.traverse(tree.root);
-        if(tree.search(7)){
+        if (tree.search(7)) {
             System.out.println("YES");
-        }else{
+        } else {
             System.out.println("NO");
         }
         System.out.println(tree.size);

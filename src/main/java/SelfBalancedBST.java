@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface SelfBalancedBST {
     /**
      * @param key Takes a key and inserts it if it is not in the tree.
@@ -30,4 +32,5 @@ public interface SelfBalancedBST {
      */
     int height();
 
+    List<Object> inorder();
 }

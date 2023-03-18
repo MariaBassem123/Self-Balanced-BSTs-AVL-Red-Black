@@ -1,8 +1,17 @@
+import java.util.ArrayList;
+
 public class RedBlackTree implements SelfBalancedBST {
     private RBNode root;
     private int size = 0;
     public static final boolean RED = false;
     public static final boolean BLACK = true;
+
+    public RedBlackTree() {
+    }
+
+    public RedBlackTree(ArrayList<Object> list) {
+        this.root = ALToBST(list, 0, list.size());
+    }
 
     public RBNode getRoot() {
         return root;
@@ -21,63 +30,53 @@ public class RedBlackTree implements SelfBalancedBST {
         boolean exist = search(key);
         if (exist) {
             return false; // the key is already found. No insertion
-<<<<<<< Updated upstream
-        }else{
-            RedBlackNode insertedNode = insertBST(root, key);
-            if(size == 1){
+        } else {
+            RBNode insertedNode = insertBST(root, key);
+            if (size == 1) {
                 insertedNode.color = BLACK; // root node with color = black
-            }else if(size > 1){
+            } else if (size > 1) {
                 // more than one node are found
                 insertedNode.color = RED;
-                RedBlackNode parent = insertedNode.parent;
-                RedBlackNode grandParent = parent.parent;
-                if(grandParent == null){
+                RBNode parent = insertedNode.parent;
+                RBNode grandParent = parent.parent;
+                if (grandParent == null) {
                     // parent is the root node which is BLACK so no problem
                     return true;
                 }
-                if(parent.color == BLACK){
+                if (parent.color == BLACK) {
                     return true;
-                }else {
+                } else {
 //                    insertedNode.parent.color == RED
-                    RedBlackNode uncle = null;
-                    if(isLeftChild(parent)){
+                    RBNode uncle = null;
+                    if (isLeftChild(parent)) {
                         uncle = grandParent.right;
-                    }else{
+                    } else {
                         uncle = grandParent.left;
                     }
-                    if(uncle == null || uncle.color == BLACK){
+                    if (uncle == null || uncle.color == BLACK) {
                         // do suitable rotation and recolor child and grandparent
-                    }else{
+                    } else {
                         // uncle.color == RED
                         // recolor and recheck if the grandparent is the root node or not {recursion}
 
                     }
                 }
             }
-=======
-        } else {
-            RBNode insertedNode = insertHelper(root, key);
->>>>>>> Stashed changes
             return true;
         }
     }
 
-<<<<<<< Updated upstream
-    private boolean isLeftChild(RedBlackNode node){
+    private boolean isLeftChild(RBNode node) {
         return node.parent.left == node;
     }
-    private boolean isRightChild(RedBlackNode node){
+
+    private boolean isRightChild(RBNode node) {
         return node.parent.right == node;
     }
 
-    private RedBlackNode insertBST(RedBlackNode node, Object key) {
-        RedBlackNode nodeToBeInserted = new RedBlackNode(key);
-        if(size == 0){
-=======
-    private RBNode insertHelper(RBNode node, Object key) {
+    private RBNode insertBST(RBNode node, Object key) {
         RBNode nodeToBeInserted = new RBNode(key);
         if (size == 0) {
->>>>>>> Stashed changes
             root = nodeToBeInserted;
             size++;
             return root;
@@ -95,14 +94,8 @@ public class RedBlackTree implements SelfBalancedBST {
                 size++;
                 return nodeToBeInserted;
             }
-<<<<<<< Updated upstream
             return insertBST(node.left, key);
-        }
-        else{
-=======
-            return insertHelper(node.left, key);
         } else {
->>>>>>> Stashed changes
             // node key < key
             // go right
             if (node.right == null) {
@@ -164,17 +157,21 @@ public class RedBlackTree implements SelfBalancedBST {
         return 0;
     }
 
-<<<<<<< Updated upstream
-    private void rotateLeft(RedBlackNode node) {
-        RedBlackNode temp = node.right;
-        if(temp == null) {
-            return;
-        }
-        temp.parent = node.parent;
-        if(node.parent != null) {
-            //if node.parent==null then temp is new root
-            if(node.parent.left == node) node.parent.left=temp;
-=======
+    public ArrayList<Object> inorder() {
+        return null;
+    }
+
+    public RBNode ALToBST(ArrayList<Object> list, int start, int end) {
+        if (start > end)
+            return null;
+        int mid = (end - start) / 2;
+        RBNode node = new RBNode(list.get(mid));
+        node.left = ALToBST(list, start, mid - 1);
+        node.right = ALToBST(list, mid + 1, end);
+        return node;
+
+    }
+
     private void rotateLeft(RBNode node) {
         RBNode temp = node.right;
         if (temp == null) {
@@ -184,34 +181,15 @@ public class RedBlackTree implements SelfBalancedBST {
         if (node.parent != null) {
             //if node.parent==null then temp is new root
             if (node.parent.left == node) node.parent.left = temp;
->>>>>>> Stashed changes
             else node.parent.right = temp;
         }
         node.parent = temp;
         node.right = temp.left;
-<<<<<<< Updated upstream
-        if(temp.left != null) {
-=======
         if (temp.left != null) {
->>>>>>> Stashed changes
             temp.left.parent = node;
         }
         temp.left = node;
 
-<<<<<<< Updated upstream
-        if(temp.parent == null) root=temp;
-    }
-
-    public void rotateRight(RedBlackNode node){
-        RedBlackNode temp = node.left;
-        if(temp == null) {
-            return;
-        }
-        temp.parent=node.parent;
-        if(node.parent != null) {
-            //if node.parent==null then temp is new root
-            if(node.parent.left == node) node.parent.left = temp;
-=======
         if (temp.parent == null) root = temp;
     }
 
@@ -224,24 +202,10 @@ public class RedBlackTree implements SelfBalancedBST {
         if (node.parent != null) {
             //if node.parent==null then temp is new root
             if (node.parent.left == node) node.parent.left = temp;
->>>>>>> Stashed changes
             else node.parent.right = temp;
         }
         node.parent = temp;
         node.left = temp.right;
-<<<<<<< Updated upstream
-        if(temp.right != null) {
-            temp.right.parent = node;
-        }
-        temp.right = node;
-        if(temp.parent == null) root=temp;
-
-    }
-
-    private void printTree(RedBlackNode node){
-        if(node != null)
-        {
-=======
         if (temp.right != null) {
             temp.right.parent = node;
         }
@@ -251,16 +215,7 @@ public class RedBlackTree implements SelfBalancedBST {
     }
 
     private void printTree(RBNode node) {
-//        if(node.right!=null){
-//            printTree(root.right);
-//        }
-//        System.out.println(node.key);
-//        if(root.left!=null){
-//            printTree(root.left);
-//        }
-//        return;
         if (node != null) {
->>>>>>> Stashed changes
             System.out.println(node.key);
             printTree(node.left);
             printTree(node.right);
