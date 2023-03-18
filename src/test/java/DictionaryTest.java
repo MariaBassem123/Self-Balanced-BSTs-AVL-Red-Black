@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class DictionaryTest {
-    private final String rootPath = "C:\\Users\\cyber\\Desktop\\Self-Balanced-BSTs-AVL-Red-Black";
+    private final String rootPath = "C:\\Users\\cyber\\Desktop\\Self-Balanced-BSTs-AVL-Red-Black\\src\\test";
     Random rand = new Random();
 
     @Test
