@@ -26,9 +26,44 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
 
     @Override
     public boolean delete(T key) {
-        return false;
+        boolean check = search(key);
+        if(!check){//the element is not found
+            System.out.println("element not found");
+            return false;
+        }
+        else {
+            root = deleteBST(root, key);
+            System.out.println("element found");
+            return true;
+        }
     }
+    private AVLNode deleteBST(AVLNode root, T key){
+        if(root == null){
+            return root;
+        }
+        if(key.compareTo((T) root.key) > 0){
+            root.right = deleteBST(root.right ,key);
+        }
+        else if(key.compareTo((T) root.key) < 0){
+            root.left = deleteBST(root.left ,key);
+        }
+        else{
+            if( root.left == null && root.right == null){
+                return null;
+            }
+            else if(root.left == null){
+                root = root.right;
+                return  root;
+            }
+            else if(root.right == null){
+                root = root.left;
+                return  root;
+            }
 
+        }
+        updateHeight(root);
+        return root;
+    }
     @Override
     public boolean search(T key) {
         return searchRecursive(root, key, false);
@@ -179,7 +214,7 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
     }
 
     public static void main(String[] args) {
-        AVLTree<Integer> tree = new AVLTree<>();
+        AVLTree tree = new AVLTree();
         tree.insert(41);
         tree.insert(38);
         tree.insert(31);
@@ -192,7 +227,12 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
 //        }else{
 //            System.out.println("NO");
 //        }
-        System.out.println("the height of the tree " + tree.height());
+        tree.delete(12);
+        tree.delete(41);
+        tree.delete(31);
+        tree.traverse(tree.root);
+        System.out.println("the height of the tree "+tree.height());
 
     }
 }
+
