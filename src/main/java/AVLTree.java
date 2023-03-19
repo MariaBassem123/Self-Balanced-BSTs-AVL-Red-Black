@@ -57,12 +57,33 @@ public class AVLTree implements SelfBalancedBST {
         return null;
     }
 
-    private AVLNode Rotation(AVLNode node) {
+    private AVLNode leftRotate(AVLNode node){
+        AVLNode rightNode = node.right;
+        AVLNode centerNode = rightNode.left;
+        rightNode.left = node;
+        node.right = centerNode;
+        updateHeight(node);
+        updateHeight(rightNode);
+        return rightNode;
+    }
+    private AVLNode rightRotate(AVLNode node){
+        AVLNode leftNode = node.left;
+        AVLNode centerNode = leftNode.right;
+        leftNode.right = node;
+        node.left=centerNode;
+        updateHeight(node);
+        updateHeight(leftNode);
+        return leftNode;
+    }
+    private AVLNode Rotation(AVLNode node){
         int balance = checkBalance(node);
-        if (balance > 1) {
+        if(balance > 1){
+            node = rightRotate(node);
             //right rotate
             System.out.println("right rotate");
-        } else if (balance < -1) {
+        }
+        else if (balance < -1){
+            node = leftRotate(node);
             //left rotate
             System.out.println("left rotate");
         }
@@ -83,7 +104,7 @@ public class AVLTree implements SelfBalancedBST {
         int leftHeight = node.left != null ? node.left.height : 0;
         int rightHeight = node.right != null ? node.right.height : 0;
         int height = Math.max(leftHeight, rightHeight) + 1;
-        node.setHeight(height);
+        node.height = height;
         System.out.println("key = " + node.key + " - its height = " + height);
     }
 
@@ -99,7 +120,7 @@ public class AVLTree implements SelfBalancedBST {
             updateHeight(node.left);
         }
         updateHeight(node);
-        Rotation(node);
+        node = Rotation(node);
         return node;
     }
 
@@ -128,24 +149,27 @@ public class AVLTree implements SelfBalancedBST {
 
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
-        tree.insert(10);
-        tree.insert(5);
         tree.insert(3);
-        tree.insert(2);
         tree.insert(4);
-        tree.insert(8);
-        tree.insert(7);
-        tree.insert(9);
-        tree.insert(15);
-        tree.insert(14);
-        tree.insert(16);
+        tree.insert(5);
+//        tree.insert(10);
+//        tree.insert(5);
+//        tree.insert(3);
+//        tree.insert(2);
+//        tree.insert(4);
+//        tree.insert(8);
+//        tree.insert(7);
+//        tree.insert(9);
+//        tree.insert(15);
+//        tree.insert(14);
+//        tree.insert(16);
         tree.traverse(tree.root);
-        if (tree.search(7)) {
-            System.out.println("YES");
-        } else {
-            System.out.println("NO");
-        }
-        System.out.println(tree.size);
+//        if(tree.search(7)){
+//            System.out.println("YES");
+//        }else{
+//            System.out.println("NO");
+//        }
+        // System.out.println(tree.size);
 
     }
 }
