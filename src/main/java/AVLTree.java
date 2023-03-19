@@ -14,9 +14,15 @@ public class AVLTree implements SelfBalancedBST {
 
     @Override
     public boolean insert(Object key) {
-        root = BSTInsert(root, (int) key);
-        size += 1;
-        return false;
+        boolean check = search(key);
+        if(check){
+            return false;
+        }
+        else {
+            root = BSTInsert(root, (int) key);//insertion using BST
+            size += 1;
+            return true;
+        }
     }
 
     @Override
@@ -50,7 +56,7 @@ public class AVLTree implements SelfBalancedBST {
 
     @Override
     public int height() {
-        return 0;
+        return root.height;
     }
 
     public ArrayList<Object> inorder() {
@@ -77,15 +83,21 @@ public class AVLTree implements SelfBalancedBST {
     }
     private AVLNode Rotation(AVLNode node){
         int balance = checkBalance(node);
-        if(balance > 1){
-            node = rightRotate(node);
-            //right rotate
-            System.out.println("right rotate");
+        if(balance > 1){//heavy left case
+            if (checkBalance(node.left) >= 0) {// Rotate right LL
+                node = rightRotate(node);
+            } else {// Rotate left-right case LR
+                node.left = leftRotate(node.left);
+                node = rightRotate(node);
+            }
         }
-        else if (balance < -1){
-            node = leftRotate(node);
-            //left rotate
-            System.out.println("left rotate");
+        else if (balance < -1){ //heavy right
+            if (checkBalance(node.right) <= 0) {// Rotate left RR
+                node = leftRotate(node);
+            } else {// Rotate right-left RL
+                node.right = rightRotate(node.right);
+                node = leftRotate(node);
+            }
         }
         return node;
     }
@@ -149,27 +161,19 @@ public class AVLTree implements SelfBalancedBST {
 
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
-        tree.insert(3);
-        tree.insert(4);
-        tree.insert(5);
-//        tree.insert(10);
-//        tree.insert(5);
-//        tree.insert(3);
-//        tree.insert(2);
-//        tree.insert(4);
-//        tree.insert(8);
-//        tree.insert(7);
-//        tree.insert(9);
-//        tree.insert(15);
-//        tree.insert(14);
-//        tree.insert(16);
+        tree.insert(41);
+        tree.insert(38);
+        tree.insert(31);
+        tree.insert(12);
+        tree.insert(19);
+        tree.insert(8);
         tree.traverse(tree.root);
 //        if(tree.search(7)){
 //            System.out.println("YES");
 //        }else{
 //            System.out.println("NO");
 //        }
-        // System.out.println(tree.size);
+         System.out.println("the height of the tree "+tree.height());
 
     }
 }
