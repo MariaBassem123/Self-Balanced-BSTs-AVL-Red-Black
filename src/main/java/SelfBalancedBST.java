@@ -1,17 +1,17 @@
 import java.util.List;
 
-public interface SelfBalancedBST {
+public interface SelfBalancedBST<T extends Comparable<T>> {
     /**
      * @param key Takes a key and inserts it if it is not in the tree.
      * @return true if it is added and false if it already exists.
      */
-    boolean insert(Object key);
+    boolean insert(T key);
 
     /**
      * @param key Takes a key and deletes it if it is in the tree.
      * @return true if it is deleted and false if it is not in the tree.
      */
-    boolean delete(Object key);
+    boolean delete(T key);
 
     // Takes a key and searches for it returning true if it is found in the tree
     // and false otherwise.
@@ -20,7 +20,7 @@ public interface SelfBalancedBST {
      * @param key Takes a key and searches for it.
      * @return true if it is found in the tree and false otherwise.
      */
-    boolean search(Object key);
+    boolean search(T key);
 
     /**
      * @return the number of keys in the tree.
@@ -32,5 +32,5 @@ public interface SelfBalancedBST {
      */
     int height();
 
-    List<Object> inorder();
+    List<T> inorder();
 }
