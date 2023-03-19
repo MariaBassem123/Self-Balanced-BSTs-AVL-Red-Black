@@ -57,15 +57,15 @@ public class RedBlackTree implements SelfBalancedBST {
                     if (uncle == null || uncle.color == BLACK) {
                         // do suitable rotation and recolor child and grandparent
                         if(isLeftChild(insertedNode) && isLeftChild(parent)){ // LL
-                            rotateRight(parent);
+                            rotateRight(parent);//grandParent??
                         }else if(isRightChild(insertedNode) && isRightChild(parent)){ // RR
-                            rotateLeft(parent);
+                            rotateLeft(parent);//grandParent??
                         }else if(isLeftChild(parent) && isRightChild(insertedNode)){ // LR
                             rotateLeft(parent);
-                            rotateRight(parent);
+                            rotateRight(parent);//grandParent?
                         }else if(isRightChild(parent) && isLeftChild(insertedNode)){ // RL
                             rotateRight(parent);
-                            rotateLeft(parent);
+                            rotateLeft(parent);//grandParent??
                         }
                     } else {
                         // uncle.color == RED
@@ -315,17 +315,15 @@ public class RedBlackTree implements SelfBalancedBST {
 
     @Override
     public int height() {
-        height = 0;
-        height = getHeight(root);
-        return 0;
+    	return getHeight(root);
+        
     }
     private int getHeight(RBNode node){
-        if (node != null) {
-            height++;
-            printTree(node.left);
-            printTree(node.right);
+        if (node == null) {
+        	return 0;
+        }else {
+        	return Math.max(getHeight(node.left),getHeight(node.right))+1;
         }
-        return height;
     }
     public ArrayList<Object> inorder() {
         return null;
@@ -387,7 +385,9 @@ public class RedBlackTree implements SelfBalancedBST {
     private void printTree(RBNode node) {
         if (node != null) {
             System.out.println(node.key);
-            System.out.println(node.color?"black":"red");
+//            System.out.println(node.color?"black":"red");
+//            System.out.println(node.left);
+//            System.out.println(node.right);
             printTree(node.left);
             printTree(node.right);
         }
@@ -395,12 +395,12 @@ public class RedBlackTree implements SelfBalancedBST {
 
     public static void main(String[] args) {
         RedBlackTree tree = new RedBlackTree();
-//        tree.insert("hi");
-//        tree.insert("bye");
-//        tree.insert("yyy");
-//        tree.insert("tree");
-//        tree.insert("code");
-//        tree.insert("dye");
+        tree.insert("hi");
+        tree.insert("bye");
+        tree.insert("yyy");
+        tree.insert("tree");
+        tree.insert("code");
+        tree.insert("dye");
 //        tree.insert("g");
 //        tree.insert("e");
 //        tree.insert("zb");
@@ -412,12 +412,13 @@ public class RedBlackTree implements SelfBalancedBST {
 //        tree.rotateRight(tree.root.right);
 //        System.out.println(" ");
         
-        tree.insert("bye");
-        tree.insert("hi");
-        tree.insert("a");
+//        tree.insert("bye");
+//        tree.insert("hi");
+//        tree.insert("a");
+//        tree.printTree(tree.root);
+//        tree.delete("bye");
         tree.printTree(tree.root);
-        tree.delete("bye");
-        tree.printTree(tree.root);
+        System.out.println(tree.height());
         Object key = "bye";
         boolean found = tree.search(key);
         System.out.println("The key you entered is: " + key + ". The key was found = " + found);
