@@ -27,9 +27,44 @@ public class AVLTree implements SelfBalancedBST {
 
     @Override
     public boolean delete(Object key) {
-        return false;
+        boolean check = search(key);
+        if(!check){//the element is not found
+            System.out.println("element not found");
+            return false;
+        }
+        else {
+            root = deleteBST(root, key);
+            System.out.println("element found");
+            return true;
+        }
     }
+    private AVLNode deleteBST(AVLNode root, Object key){
+        if(root == null){
+            return root;
+        }
+        if(root.key < (int)key){
+            root.right = deleteBST(root.right ,key);
+        }
+        else if(root.key > (int)key){
+            root.left = deleteBST(root.left ,key);
+        }
+        else{
+            if( root.left == null && root.right == null){
+                return null;
+            }
+            else if(root.left == null){
+                root = root.right;
+                return  root;
+            }
+            else if(root.right == null){
+                root = root.left;
+                return  root;
+            }
 
+        }
+        updateHeight(root);
+        return root;
+    }
     @Override
     public boolean search(Object key) {
         return searchRecursive(root, (int) key);
@@ -126,10 +161,8 @@ public class AVLTree implements SelfBalancedBST {
         }
         if (key > node.key) {//insertion to the right
             node.right = BSTInsert(node.right, key);
-            updateHeight(node.right);
         } else if (key < node.key) {//insertion to the left
             node.left = BSTInsert(node.left, key);
-            updateHeight(node.left);
         }
         updateHeight(node);
         node = Rotation(node);
@@ -168,11 +201,16 @@ public class AVLTree implements SelfBalancedBST {
         tree.insert(19);
         tree.insert(8);
         tree.traverse(tree.root);
+
 //        if(tree.search(7)){
 //            System.out.println("YES");
 //        }else{
 //            System.out.println("NO");
 //        }
+        tree.delete(12);
+        tree.delete(41);
+        tree.delete(31);
+        tree.traverse(tree.root);
          System.out.println("the height of the tree "+tree.height());
 
     }
