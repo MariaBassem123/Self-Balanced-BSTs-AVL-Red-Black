@@ -37,6 +37,9 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
             return true;
         }
     }
+    private AVLNode getSuccessor(AVLNode node){
+        return (node.right == null) ? node : getSuccessor(node.right);
+    }
     private AVLNode deleteBST(AVLNode root, T key){
         if(root == null){
             return root;
@@ -58,6 +61,10 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
             else if(root.right == null){
                 root = root.left;
                 return  root;
+            } else{
+                AVLNode successor = getSuccessor(root.left);
+                root.key = successor.key;
+                root.left = deleteBST(root.left, (T) successor.key);
             }
 
         }
@@ -215,21 +222,21 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
 
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
-        tree.insert(41);
-        tree.insert(38);
-        tree.insert(31);
-        tree.insert(12);
-        tree.insert(19);
+        tree.insert(10);
         tree.insert(8);
+        tree.insert(12);
+        tree.insert(7);
+        tree.insert(9);
+        tree.insert(11);
+        tree.insert(13);
         tree.traverse(tree.root);
+
 //        if(tree.search(7)){
 //            System.out.println("YES");
 //        }else{
 //            System.out.println("NO");
 //        }
-        tree.delete(12);
-        tree.delete(41);
-        tree.delete(31);
+        tree.delete(10);
         tree.traverse(tree.root);
         System.out.println("the height of the tree "+tree.height());
 
