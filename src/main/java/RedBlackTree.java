@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-public class RedBlackTree implements SelfBalancedBST {
-    private RBNode root;
+public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
+    private RBNode<T> root;
     private int size = 0;
     int height = 0;
     public static final boolean RED = false;
@@ -10,15 +10,11 @@ public class RedBlackTree implements SelfBalancedBST {
     public RedBlackTree() {
     }
 
-    public RedBlackTree(ArrayList<Object> list) {
-        this.root = ALToBST(list, 0, list.size());
-    }
-
-    public RBNode getRoot() {
+    public RBNode<T> getRoot() {
         return root;
     }
 
-    public void setRoot(RBNode root) {
+    public void setRoot(RBNode<T> root) {
         this.root = root;
     }
 
@@ -27,19 +23,19 @@ public class RedBlackTree implements SelfBalancedBST {
     }
 
     @Override
-    public boolean insert(Object key) {
+    public boolean insert(T key) {
         boolean exist = search(key);
         if (exist) {
             return false; // the key is already found. No insertion
         } else {
-            RBNode insertedNode = insertBST(root, key);
+            RBNode<T> insertedNode = insertBST(root, key);
             if (size == 1) {
                 insertedNode.color = BLACK; // root node with color = black
             } else if (size > 1) {
                 // more than one node are found
                 insertedNode.color = RED;
-                RBNode parent = insertedNode.parent;
-                RBNode grandParent = parent.parent;
+                RBNode<T> parent = insertedNode.parent;
+                RBNode<T> grandParent = parent.parent;
                 if (grandParent == null) {
                     // parent is the root node which is BLACK so no problem
                     return true;
@@ -48,7 +44,7 @@ public class RedBlackTree implements SelfBalancedBST {
                     return true;
                 } else {
 //                    insertedNode.parent.color == RED
-                    RBNode uncle = null;
+                    RBNode<T> uncle = null;
                     if (isLeftChild(parent)) {
                         uncle = grandParent.right;
                     } else {
@@ -56,14 +52,14 @@ public class RedBlackTree implements SelfBalancedBST {
                     }
                     if (uncle == null || uncle.color == BLACK) {
                         // do suitable rotation and recolor child and grandparent
-                        if(isLeftChild(insertedNode) && isLeftChild(parent)){ // LL
+                        if (isLeftChild(insertedNode) && isLeftChild(parent)) { // LL
                             rotateRight(parent);
-                        }else if(isRightChild(insertedNode) && isRightChild(parent)){ // RR
+                        } else if (isRightChild(insertedNode) && isRightChild(parent)) { // RR
                             rotateLeft(parent);
-                        }else if(isLeftChild(parent) && isRightChild(insertedNode)){ // LR
+                        } else if (isLeftChild(parent) && isRightChild(insertedNode)) { // LR
                             rotateLeft(parent);
                             rotateRight(parent);
-                        }else if(isRightChild(parent) && isLeftChild(insertedNode)){ // RL
+                        } else if (isRightChild(parent) && isLeftChild(insertedNode)) { // RL
                             rotateRight(parent);
                             rotateLeft(parent);
                         }
@@ -78,55 +74,53 @@ public class RedBlackTree implements SelfBalancedBST {
         }
     }
 
-    private boolean isLeftChild(RBNode node) {
+    private boolean isLeftChild(RBNode<T> node) {
         return node.parent.left == node;
     }
 
-    private boolean isRightChild(RBNode node) {
+    private boolean isRightChild(RBNode<T> node) {
         return node.parent.right == node;
     }
-    
-    private RBNode getSuccessor(RBNode node) {
-    	node=node.right;
-    	while(node.left!=null) {
-    		node=node.left;
-    	}
-    	return node;
+
+    private RBNode<T> getSuccessor(RBNode<T> node) {
+        node = node.right;
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
     }
-    
-    private boolean hasNoChildren(RBNode node) {
-        return node.left==null && node.right==null;
+
+    private boolean hasNoChildren(RBNode<T> node) {
+        return node.left == null && node.right == null;
     }
-    
-    private boolean hasOneChild(RBNode node) {
-        return (node.left==null && node.right!=null)||(node.left!=null && node.right==null);
+
+    private boolean hasOneChild(RBNode<T> node) {
+        return (node.left == null && node.right != null) || (node.left != null && node.right == null);
     }
-    
-    private boolean hasTwoChildren(RBNode node) {
-        return node.left!=null && node.right!=null;
+
+    private boolean hasTwoChildren(RBNode<T> node) {
+        return node.left != null && node.right != null;
     }
-    private RBNode sibling(RBNode x) {
-    	if(x.parent==null) return null;
-    	
-    	if(isLeftChild(x))return x.parent.right;
-    	else return x.parent.left;
+
+    private RBNode<T> sibling(RBNode<T> x) {
+        if (x.parent == null) return null;
+
+        if (isLeftChild(x)) return x.parent.right;
+        else return x.parent.left;
     }
-    
-    private boolean hasRedChild(RBNode node) {
-        return (node.left!=null && node.left.color==RED) || (node.right!=null && node.right.color==RED);
+
+    private boolean hasRedChild(RBNode<T> node) {
+        return (node.left != null && node.left.color == RED) || (node.right != null && node.right.color == RED);
     }
-    
-    private RBNode insertBST(RBNode node, Object key) {
-        RBNode nodeToBeInserted = new RBNode(key);
+
+    private RBNode<T> insertBST(RBNode<T> node, T key) {
+        RBNode<T> nodeToBeInserted = new RBNode<>(key);
         if (size == 0) {
             root = nodeToBeInserted;
             size++;
             return root;
         }
-        String nodeKey = (String) node.key;
-        String givenKey = (String) key;
-
-        if (nodeKey.compareTo(givenKey) > 0) {
+        if (node.key.compareTo(key) > 0) {
             // node key > key
             // go left
             if (node.left == null) {
@@ -152,146 +146,144 @@ public class RedBlackTree implements SelfBalancedBST {
     }
 
     @Override
-    public boolean delete(Object key) {
-    	RBNode nodeToDelete=searchHelper(root,key);
-    	if(nodeToDelete!=null) {
-    		size--;
-    		deleteHelper(nodeToDelete);
-    		return true;
-    	}
+    public boolean delete(T key) {
+        RBNode<T> nodeToDelete = searchHelper(root, key);
+        if (nodeToDelete != null) {
+            size--;
+            deleteHelper(nodeToDelete);
+            return true;
+        }
         return false;
     }
-    
-    private void deleteHelper(RBNode node) {
-    	boolean deletedNodeColor=node.color;
-    	RBNode successor=node;
-    	RBNode replace=node;
-    	if(hasNoChildren(node)) {//remove leafe node
-    		if(node.parent!=null) {//not a root
-    			if(isRightChild(node)) {
-        			node.parent.right=null;
-        		}else {
-        			node.parent.left=null;
-        		}
-    		}else {
-    			root=null;
-    		}
-    		replace=null;
-    	}
-    	
-    	if(hasOneChild(node)) {
-    		RBNode child=((node.right!=null)? node.right: node.left);
-    		child.parent=node.parent;
-    		if(node==root) {
-    			root=child;
-    		}else {
-    			if(isRightChild(node)) {
-    				node.parent.right=child;    			
-    			}else {
-    				node.parent.left=child;
-    			}
-    		}
-    		replace=child;
-    	}
-    	
-    	if(hasTwoChildren(node)) {
-    		successor=getSuccessor(node);
-    		node.key=successor.key;
-    		deleteHelper(successor);
-    	}
-    	deleteBalance(node,replace);
+
+    private void deleteHelper(RBNode<T> node) {
+        boolean deletedNodeColor = node.color;
+        RBNode<T> successor = node;
+        RBNode<T> replace = node;
+        if (hasNoChildren(node)) {//remove leafe node
+            if (node.parent != null) {//not a root
+                if (isRightChild(node)) {
+                    node.parent.right = null;
+                } else {
+                    node.parent.left = null;
+                }
+            } else {
+                root = null;
+            }
+            replace = null;
+        }
+
+        if (hasOneChild(node)) {
+            RBNode<T> child = ((node.right != null) ? node.right : node.left);
+            child.parent = node.parent;
+            if (node == root) {
+                root = child;
+            } else {
+                if (isRightChild(node)) {
+                    node.parent.right = child;
+                } else {
+                    node.parent.left = child;
+                }
+            }
+            replace = child;
+        }
+
+        if (hasTwoChildren(node)) {
+            successor = getSuccessor(node);
+            node.key = successor.key;
+            deleteHelper(successor);
+        }
+        deleteBalance(node, replace);
     }
-    
-    private void deleteBalance(RBNode deleted,RBNode replace) {
-    	if(root==null)return;//no tree
-    	
-    	if(deleted.color==RED) {
-    		return;
-    	}else if(deleted.color==BLACK &&(replace!=null && replace.color==RED)) {
-    		replace.color=BLACK;
-    		System.out.println("u->black, v->red");
-    		return;
-    	}else {//black black
-    		if(replace!=null) doubleBlack(replace);
-    		else doubleBlack(deleted);
-    	}
+
+    private void deleteBalance(RBNode<T> deleted, RBNode<T> replace) {
+        if (root == null) return;//no tree
+
+        if (deleted.color == RED) {
+            return;
+        } else if (deleted.color == BLACK && (replace != null && replace.color == RED)) {
+            replace.color = BLACK;
+            System.out.println("u->black, v->red");
+        } else {//black black
+            if (replace != null) doubleBlack(replace);
+            else doubleBlack(deleted);
+        }
     }
-    private void doubleBlack(RBNode x) {
-    	if(x==root) return;
-    	
-    	RBNode parent=null;
-    	if(x!=null) {//not nil =deleted was not a leaf 
-    		parent=x.parent;//node.parent
-    	}
-    	RBNode sibling=sibling(x);
-    	
-    	if(sibling==null) {
-    		doubleBlack(parent);
-    	}else {//sibling exist
-    		if(sibling.color==BLACK) {
-    			if(hasRedChild(sibling)) {//red cousins
-    				if(isLeftChild(sibling)) {//L
-    					if(sibling.left!=null && sibling.left.color==RED) {//LL
-    						sibling.left.color=BLACK;
-    						sibling.color=parent.color;
-    						rotateRight(parent);
-    					}else {//LR
-    						sibling.right.color=parent.color;
-    						rotateLeft(sibling);
-    						rotateRight(parent);
-    					}
-    					
-    				}else {//R
-    					if(sibling.left!=null && sibling.left.color==RED) {//RL
-    						sibling.left.color=parent.color;
-    						rotateRight(sibling);
-    						rotateLeft(parent);
-    					}else {//RR
-    						sibling.right.color=BLACK;
-    						sibling.color=parent.color;
-    						rotateLeft(parent);
-    					}
-    					
-    				}
-    				parent.color=BLACK;
-    			}else {// 2black cousins
-    				sibling.color=RED;
-    				if(parent.color==RED) {
-    					parent.color=BLACK;
-    				}else {
-    					doubleBlack(parent);
-    				}
-    			}
-    			
-    		}else if(sibling.color==RED){
-    			parent.color=RED;
-    			sibling.color=BLACK;
-    			if(isRightChild(sibling)) {
-    				rotateLeft(parent);
-    			}else {
-    				rotateRight(parent);
-    			}
-    			doubleBlack(x);
-    		}
-    	}
+
+    private void doubleBlack(RBNode<T> x) {
+        if (x == root) return;
+
+        RBNode<T> parent = null;
+        if (x != null) {//not nil =deleted was not a leaf
+            parent = x.parent;//node.parent
+        }
+        RBNode<T> sibling = sibling(x);
+
+        if (sibling == null) {
+            doubleBlack(parent);
+        } else {//sibling exist
+            if (sibling.color == BLACK) {
+                if (hasRedChild(sibling)) {//red cousins
+                    if (isLeftChild(sibling)) {//L
+                        if (sibling.left != null && sibling.left.color == RED) {//LL
+                            sibling.left.color = BLACK;
+                            sibling.color = parent.color;
+                            rotateRight(parent);
+                        } else {//LR
+                            sibling.right.color = parent.color;
+                            rotateLeft(sibling);
+                            rotateRight(parent);
+                        }
+
+                    } else {//R
+                        if (sibling.left != null && sibling.left.color == RED) {//RL
+                            sibling.left.color = parent.color;
+                            rotateRight(sibling);
+                            rotateLeft(parent);
+                        } else {//RR
+                            sibling.right.color = BLACK;
+                            sibling.color = parent.color;
+                            rotateLeft(parent);
+                        }
+
+                    }
+                    parent.color = BLACK;
+                } else {// 2black cousins
+                    sibling.color = RED;
+                    if (parent.color == RED) {
+                        parent.color = BLACK;
+                    } else {
+                        doubleBlack(parent);
+                    }
+                }
+
+            } else if (sibling.color == RED) {
+                parent.color = RED;
+                sibling.color = BLACK;
+                if (isRightChild(sibling)) {
+                    rotateLeft(parent);
+                } else {
+                    rotateRight(parent);
+                }
+                doubleBlack(x);
+            }
+        }
     }
 
     @Override
-    public boolean search(Object key) {
+    public boolean search(T key) {
         if (size != 0) {
-            RBNode requiredNode = searchHelper(root, key);
+            RBNode<T> requiredNode = searchHelper(root, key);
             return requiredNode != null;
         }
         return false;
     }
 
-    private RBNode searchHelper(RBNode node, Object key) {
+    private RBNode<T> searchHelper(RBNode<T> node, T key) {
 
-        String nodeKey = (String) node.key;
-        String givenKey = (String) key;
         if (node.key.equals(key)) {
             return node;
-        } else if (nodeKey.compareTo(givenKey) > 0) {
+        } else if (node.key.compareTo(key) > 0) {
             // node key > key
             // go left
             if (node.left == null) {
@@ -319,7 +311,8 @@ public class RedBlackTree implements SelfBalancedBST {
         height = getHeight(root);
         return 0;
     }
-    private int getHeight(RBNode node){
+
+    private int getHeight(RBNode<T> node) {
         if (node != null) {
             height++;
             printTree(node.left);
@@ -327,23 +320,27 @@ public class RedBlackTree implements SelfBalancedBST {
         }
         return height;
     }
-    public ArrayList<Object> inorder() {
-        return null;
+
+    public ArrayList<T> inorder() {
+        ArrayList<T> list = new ArrayList<>();
+        inorder(root, list);
+        return list;
     }
 
-    public RBNode ALToBST(ArrayList<Object> list, int start, int end) {
-        if (start > end)
-            return null;
-        int mid = (end - start) / 2;
-        RBNode node = new RBNode(list.get(mid));
-        node.left = ALToBST(list, start, mid - 1);
-        node.right = ALToBST(list, mid + 1, end);
-        return node;
+    private void inorder(RBNode<T> node, ArrayList<T> list) {
+        if (node == null)
+            return;
 
+        //recur on the left child
+        inorder(node.left, list);
+        // Adds data to the list
+        list.add(node.key);
+        //recur on the right child
+        inorder(node.right, list);
     }
 
-    private void rotateLeft(RBNode node) {
-        RBNode temp = node.right;
+    private void rotateLeft(RBNode<T> node) {
+        RBNode<T> temp = node.right;
         if (temp == null) {
             return;
         }
@@ -363,8 +360,8 @@ public class RedBlackTree implements SelfBalancedBST {
         if (temp.parent == null) root = temp;
     }
 
-    public void rotateRight(RBNode node) {
-        RBNode temp = node.left;
+    public void rotateRight(RBNode<T> node) {
+        RBNode<T> temp = node.left;
         if (temp == null) {
             return;
         }
@@ -384,17 +381,17 @@ public class RedBlackTree implements SelfBalancedBST {
 
     }
 
-    private void printTree(RBNode node) {
+    private void printTree(RBNode<T> node) {
         if (node != null) {
             System.out.println(node.key);
-            System.out.println(node.color?"black":"red");
+            System.out.println(node.color ? "black" : "red");
             printTree(node.left);
             printTree(node.right);
         }
     }
 
     public static void main(String[] args) {
-        RedBlackTree tree = new RedBlackTree();
+        RedBlackTree<String> tree = new RedBlackTree<>();
 //        tree.insert("hi");
 //        tree.insert("bye");
 //        tree.insert("yyy");
@@ -411,14 +408,14 @@ public class RedBlackTree implements SelfBalancedBST {
 //        tree.printTree(tree.root);
 //        tree.rotateRight(tree.root.right);
 //        System.out.println(" ");
-        
+
         tree.insert("bye");
         tree.insert("hi");
         tree.insert("a");
         tree.printTree(tree.root);
         tree.delete("bye");
         tree.printTree(tree.root);
-        Object key = "bye";
+        String key = "bye";
         boolean found = tree.search(key);
         System.out.println("The key you entered is: " + key + ". The key was found = " + found);
     }
