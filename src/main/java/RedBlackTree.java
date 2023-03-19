@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class RedBlackTree implements SelfBalancedBST {
     private RBNode root;
     private int size = 0;
+    int height = 0;
     public static final boolean RED = false;
     public static final boolean BLACK = true;
 
@@ -55,6 +56,17 @@ public class RedBlackTree implements SelfBalancedBST {
                     }
                     if (uncle == null || uncle.color == BLACK) {
                         // do suitable rotation and recolor child and grandparent
+                        if(isLeftChild(insertedNode) && isLeftChild(parent)){ // LL
+                            rotateRight(parent);
+                        }else if(isRightChild(insertedNode) && isRightChild(parent)){ // RR
+                            rotateLeft(parent);
+                        }else if(isLeftChild(parent) && isRightChild(insertedNode)){ // LR
+                            rotateLeft(parent);
+                            rotateRight(parent);
+                        }else if(isRightChild(parent) && isLeftChild(insertedNode)){ // RL
+                            rotateRight(parent);
+                            rotateLeft(parent);
+                        }
                     } else {
                         // uncle.color == RED
                         // recolor and recheck if the grandparent is the root node or not {recursion}
@@ -107,7 +119,6 @@ public class RedBlackTree implements SelfBalancedBST {
             }
             return insertBST(node.right, key);
         }
-
     }
 
     @Override
@@ -154,9 +165,18 @@ public class RedBlackTree implements SelfBalancedBST {
 
     @Override
     public int height() {
+        height = 0;
+        height = getHeight(root);
         return 0;
     }
-
+    private int getHeight(RBNode node){
+        if (node != null) {
+            height++;
+            printTree(node.left);
+            printTree(node.right);
+        }
+        return height;
+    }
     public ArrayList<Object> inorder() {
         return null;
     }
@@ -179,7 +199,7 @@ public class RedBlackTree implements SelfBalancedBST {
         }
         temp.parent = node.parent;
         if (node.parent != null) {
-            //if node.parent==null then temp is new root
+            //if node.parent == null then temp is new root
             if (node.parent.left == node) node.parent.left = temp;
             else node.parent.right = temp;
         }
