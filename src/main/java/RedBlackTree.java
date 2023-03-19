@@ -85,7 +85,37 @@ public class RedBlackTree implements SelfBalancedBST {
     private boolean isRightChild(RBNode node) {
         return node.parent.right == node;
     }
-
+    
+    private RBNode getSuccessor(RBNode node) {
+    	node=node.right;
+    	while(node.left!=null) {
+    		node=node.left;
+    	}
+    	return node;
+    }
+    
+    private boolean hasNoChildren(RBNode node) {
+        return node.left==null && node.right==null;
+    }
+    
+    private boolean hasOneChild(RBNode node) {
+        return (node.left==null && node.right!=null)||(node.left!=null && node.right==null);
+    }
+    
+    private boolean hasTwoChildren(RBNode node) {
+        return node.left!=null && node.right!=null;
+    }
+    private RBNode sibling(RBNode x) {
+    	if(x.parent==null) return null;
+    	
+    	if(isLeftChild(x))return x.parent.right;
+    	else return x.parent.left;
+    }
+    
+    private boolean hasRedChild(RBNode node) {
+        return (node.left!=null && node.left.color==RED) || (node.right!=null && node.right.color==RED);
+    }
+    
     private RBNode insertBST(RBNode node, Object key) {
         RBNode nodeToBeInserted = new RBNode(key);
         if (size == 0) {
@@ -123,7 +153,127 @@ public class RedBlackTree implements SelfBalancedBST {
 
     @Override
     public boolean delete(Object key) {
+    	RBNode nodeToDelete=searchHelper(root,key);
+    	if(nodeToDelete!=null) {
+    		size--;
+    		deleteHelper(nodeToDelete);
+    		return true;
+    	}
         return false;
+    }
+    
+    private void deleteHelper(RBNode node) {
+    	boolean deletedNodeColor=node.color;
+    	RBNode successor=node;
+    	RBNode replace=node;
+    	if(hasNoChildren(node)) {//remove leafe node
+    		if(node.parent!=null) {//not a root
+    			if(isRightChild(node)) {
+        			node.parent.right=null;
+        		}else {
+        			node.parent.left=null;
+        		}
+    		}else {
+    			root=null;
+    		}
+    		replace=null;
+    	}
+    	
+    	if(hasOneChild(node)) {
+    		RBNode child=((node.right!=null)? node.right: node.left);
+    		child.parent=node.parent;
+    		if(node==root) {
+    			root=child;
+    		}else {
+    			if(isRightChild(node)) {
+    				node.parent.right=child;    			
+    			}else {
+    				node.parent.left=child;
+    			}
+    		}
+    		replace=child;
+    	}
+    	
+    	if(hasTwoChildren(node)) {
+    		successor=getSuccessor(node);
+    		node.key=successor.key;
+    		deleteHelper(successor);
+    	}
+    	deleteBalance(node,replace);
+    }
+    
+    private void deleteBalance(RBNode deleted,RBNode replace) {
+    	if(root==null)return;//no tree
+    	
+    	if(deleted.color==RED) {
+    		return;
+    	}else if(deleted.color==BLACK &&(replace!=null && replace.color==RED)) {
+    		replace.color=BLACK;
+    		System.out.println("u->black, v->red");
+    		return;
+    	}else {//black black
+    		if(replace!=null) doubleBlack(replace);
+    		else doubleBlack(deleted);
+    	}
+    }
+    private void doubleBlack(RBNode x) {
+    	if(x==root) return;
+    	
+    	RBNode parent=null;
+    	if(x!=null) {//not nil =deleted was not a leaf 
+    		parent=x.parent;//node.parent
+    	}
+    	RBNode sibling=sibling(x);
+    	
+    	if(sibling==null) {
+    		doubleBlack(parent);
+    	}else {//sibling exist
+    		if(sibling.color==BLACK) {
+    			if(hasRedChild(sibling)) {//red cousins
+    				if(isLeftChild(sibling)) {//L
+    					if(sibling.left!=null && sibling.left.color==RED) {//LL
+    						sibling.left.color=BLACK;
+    						sibling.color=parent.color;
+    						rotateRight(parent);
+    					}else {//LR
+    						sibling.right.color=parent.color;
+    						rotateLeft(sibling);
+    						rotateRight(parent);
+    					}
+    					
+    				}else {//R
+    					if(sibling.left!=null && sibling.left.color==RED) {//RL
+    						sibling.left.color=parent.color;
+    						rotateRight(sibling);
+    						rotateLeft(parent);
+    					}else {//RR
+    						sibling.right.color=BLACK;
+    						sibling.color=parent.color;
+    						rotateLeft(parent);
+    					}
+    					
+    				}
+    				parent.color=BLACK;
+    			}else {// 2black cousins
+    				sibling.color=RED;
+    				if(parent.color==RED) {
+    					parent.color=BLACK;
+    				}else {
+    					doubleBlack(parent);
+    				}
+    			}
+    			
+    		}else if(sibling.color==RED){
+    			parent.color=RED;
+    			sibling.color=BLACK;
+    			if(isRightChild(sibling)) {
+    				rotateLeft(parent);
+    			}else {
+    				rotateRight(parent);
+    			}
+    			doubleBlack(x);
+    		}
+    	}
     }
 
     @Override
@@ -200,7 +350,7 @@ public class RedBlackTree implements SelfBalancedBST {
         temp.parent = node.parent;
         if (node.parent != null) {
             //if node.parent == null then temp is new root
-            if (node.parent.left == node) node.parent.left = temp;
+            if (isLeftChild(node)) node.parent.left = temp;
             else node.parent.right = temp;
         }
         node.parent = temp;
@@ -221,7 +371,7 @@ public class RedBlackTree implements SelfBalancedBST {
         temp.parent = node.parent;
         if (node.parent != null) {
             //if node.parent==null then temp is new root
-            if (node.parent.left == node) node.parent.left = temp;
+            if (isLeftChild(node)) node.parent.left = temp;
             else node.parent.right = temp;
         }
         node.parent = temp;
@@ -237,6 +387,7 @@ public class RedBlackTree implements SelfBalancedBST {
     private void printTree(RBNode node) {
         if (node != null) {
             System.out.println(node.key);
+            System.out.println(node.color?"black":"red");
             printTree(node.left);
             printTree(node.right);
         }
@@ -244,24 +395,29 @@ public class RedBlackTree implements SelfBalancedBST {
 
     public static void main(String[] args) {
         RedBlackTree tree = new RedBlackTree();
-        tree.insert("hi");
+//        tree.insert("hi");
+//        tree.insert("bye");
+//        tree.insert("yyy");
+//        tree.insert("tree");
+//        tree.insert("code");
+//        tree.insert("dye");
+//        tree.insert("g");
+//        tree.insert("e");
+//        tree.insert("zb");
+//        tree.insert("za");
+//        tree.insert("zz");
+//        tree.insert("s");
+//        tree.insert("u");
+//        tree.printTree(tree.root);
+//        tree.rotateRight(tree.root.right);
+//        System.out.println(" ");
+        
         tree.insert("bye");
-        tree.insert("yyy");
-        tree.insert("tree");
-        tree.insert("code");
-        tree.insert("dye");
-        tree.insert("g");
-        tree.insert("e");
-        tree.insert("zb");
-        tree.insert("za");
-        tree.insert("zz");
-        tree.insert("s");
-        tree.insert("u");
+        tree.insert("hi");
+        tree.insert("a");
         tree.printTree(tree.root);
-        tree.rotateRight(tree.root.right);
-        System.out.println(" ");
+        tree.delete("bye");
         tree.printTree(tree.root);
-
         Object key = "bye";
         boolean found = tree.search(key);
         System.out.println("The key you entered is: " + key + ". The key was found = " + found);
