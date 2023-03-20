@@ -1,15 +1,11 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
     private AVLNode<T> root;
-    private int size = 0;
+    private int size;
 
     public AVLTree() {
-    }
-
-    public AVLTree(List<T> list) {
-        this.root = ALToBST(list, 0, list.size() - 1);
+        this.size = 0;
     }
 
     @Override
@@ -27,71 +23,65 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
     @Override
     public boolean delete(T key) {
         boolean check = search(key);
-        if(!check){//the element is not found
+        if (!check) {//the element is not found
             System.out.println("element not found");
             return false;
-        }
-        else {
+        } else {
             root = deleteBST(root, key);
             System.out.println("element found");
+            size -= 1;
             return true;
         }
     }
-    private AVLNode getSuccessor(AVLNode node){
+
+    private AVLNode<T> getSuccessor(AVLNode<T> node) {
         return (node.right == null) ? node : getSuccessor(node.right);
     }
-    private AVLNode deleteBST(AVLNode root, T key){
-        if(root == null){
-            return root;
+
+    private AVLNode<T> deleteBST(AVLNode<T> root, T key) {
+        if (root == null) {
+            return null;
         }
-        if(key.compareTo((T) root.key) > 0){
-            root.right = deleteBST(root.right ,key);
-        }
-        else if(key.compareTo((T) root.key) < 0){
-            root.left = deleteBST(root.left ,key);
-        }
-        else{
-            if( root.left == null && root.right == null){
+        if (key.compareTo(root.key) > 0) {
+            root.right = deleteBST(root.right, key);
+        } else if (key.compareTo(root.key) < 0) {
+            root.left = deleteBST(root.left, key);
+        } else {
+            if (root.left == null && root.right == null) {
                 return null;
-            }
-            else if(root.left == null){
+            } else if (root.left == null) {
                 root = root.right;
-                return  root;
-            }
-            else if(root.right == null){
+                return root;
+            } else if (root.right == null) {
                 root = root.left;
-                return  root;
-            } else{
-                AVLNode successor = getSuccessor(root.left);
+                return root;
+            } else {
+                AVLNode<T> successor = getSuccessor(root.left);
                 root.key = successor.key;
-                root.left = deleteBST(root.left, (T) successor.key);
+                root.left = deleteBST(root.left, successor.key);
             }
 
         }
         updateHeight(root);
         return root;
     }
+
     @Override
     public boolean search(T key) {
-        return searchRecursive(root, key, false);
+        return searchRecursive(root, key);
     }
 
-    public boolean searchAndMark(T key) {
-        return searchRecursive(root, key, true);
-    }
-
-    private boolean searchRecursive(AVLNode<T> node, T key, boolean mark) {
+    private boolean searchRecursive(AVLNode<T> node, T key) {
         if (node == null) {
             return false;
         }
         if (node.key.compareTo(key) == 0) {
-            node.marked = mark;
             return true;
         }
         if (key.compareTo(node.key) > 0) {
-            return searchRecursive(node.right, key, mark);
+            return searchRecursive(node.right, key);
         } else {
-            return searchRecursive(node.left, key, mark);
+            return searchRecursive(node.left, key);
         }
     }
 
@@ -118,7 +108,7 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         //recur on the left child
         inorder(node.left, list);
         // Adds data to the list if it is not marked as deleted
-        if (!node.marked) list.add(node.key);
+        list.add(node.key);
         //recur on the right child
         inorder(node.right, list);
     }
@@ -210,25 +200,12 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         traverse(root.right);
     }
 
-    private AVLNode<T> ALToBST(List<T> list, int start, int end) {
-        if (start > end)
-            return null;
-        int mid = (end + start) / 2;
-        AVLNode<T> node = new AVLNode<>(list.get(mid));// mid -> list.get(mid)
-        node.left = ALToBST(list, start, mid - 1);
-        node.right = ALToBST(list, mid + 1, end);
-        return node;
-    }
-
     public static void main(String[] args) {
-        AVLTree tree = new AVLTree();
+        AVLTree<Integer> tree = new AVLTree<>();
         tree.insert(10);
         tree.insert(8);
         tree.insert(12);
-        tree.insert(7);
-        tree.insert(9);
-        tree.insert(11);
-        tree.insert(13);
+
         tree.traverse(tree.root);
 
 //        if(tree.search(7)){
@@ -238,8 +215,8 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
 //        }
         tree.delete(10);
         tree.traverse(tree.root);
-        System.out.println("the height of the tree "+tree.height());
-
+        System.out.println("the height of the tree " + tree.height());
+        System.out.println("size of tree " + tree.size());
     }
 }
 

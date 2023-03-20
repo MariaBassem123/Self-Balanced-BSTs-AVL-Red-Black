@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 
 public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
-    private RBNode<T> root;
-    private int size = 0;
-    int height = 0;
     public static final boolean RED = false;
     public static final boolean BLACK = true;
+    private RBNode<T> root;
+    private int size;
+    int height;
 
     public RedBlackTree() {
+        this.size = 0;
+        this.height = 0;
     }
 
     public RBNode<T> getRoot() {
@@ -51,7 +53,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         }
     }
 
-    private void recheckRedRed(RBNode<T> insertedNode){
+    private void recheckRedRed(RBNode<T> insertedNode) {
         RBNode<T> parent = insertedNode.parent;
         RBNode<T> grandParent = parent.parent;
         if (grandParent == null) {
@@ -62,7 +64,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
             return;
         }
 //            insertedNode.parent.color == RED Red red conflict
-        else{
+        else {
             RBNode<T> uncle;
             if (isLeftChild(parent)) {
                 uncle = grandParent.right;
@@ -72,35 +74,35 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
             if (uncle == null || uncle.color == BLACK) {
                 boolean LR_RL_Flag = false;
                 // do suitable rotation and recolor new parent and new grandparent
-                if(isLeftChild(insertedNode) && isLeftChild(parent)){ // LL
+                if (isLeftChild(insertedNode) && isLeftChild(parent)) { // LL
                     rotateRight(grandParent);
-                }else if(isRightChild(insertedNode) && isRightChild(parent)){ // RR
+                } else if (isRightChild(insertedNode) && isRightChild(parent)) { // RR
                     rotateLeft(grandParent);
-                }else if(isLeftChild(parent) && isRightChild(insertedNode)){ // LR
+                } else if (isLeftChild(parent) && isRightChild(insertedNode)) { // LR
                     LR_RL_Flag = true;
                     rotateLeft(parent);
                     rotateRight(grandParent);
-                }else if(isRightChild(parent) && isLeftChild(insertedNode)){ // RL
+                } else if (isRightChild(parent) && isLeftChild(insertedNode)) { // RL
                     LR_RL_Flag = true;
                     rotateRight(parent);
                     rotateLeft(grandParent);
                 }
                 // recolor
-                if(grandParent.color == RED){
+                if (grandParent.color == RED) {
                     grandParent.color = BLACK;
-                } else{
+                } else {
                     grandParent.color = RED;
                 }
-                if(LR_RL_Flag == true){
-                    if(insertedNode.color == RED){
+                if (LR_RL_Flag == true) {
+                    if (insertedNode.color == RED) {
                         insertedNode.color = BLACK;
-                    } else{
+                    } else {
                         insertedNode.color = RED;
                     }
-                }else{
-                    if(parent.color == RED){
+                } else {
+                    if (parent.color == RED) {
                         parent.color = BLACK;
-                    } else{
+                    } else {
                         parent.color = RED;
                     }
                 }
@@ -108,22 +110,22 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
             } else {
                 // uncle.color == RED
                 // recolor parent and uncle and recheck if the grandparent is the root node or not {recursion}
-                if(parent.color == RED){
+                if (parent.color == RED) {
                     parent.color = BLACK;
-                } else{
+                } else {
                     parent.color = RED;
                 }
-                if(uncle.color == RED){
+                if (uncle.color == RED) {
                     uncle.color = BLACK;
-                } else{
+                } else {
                     uncle.color = RED;
                 }
                 // recheck if the grandparent is not the root
-                if(root != grandParent){
+                if (root != grandParent) {
                     // if not root node then recolor it
-                    if(grandParent.color == RED){
+                    if (grandParent.color == RED) {
                         grandParent.color = BLACK;
-                    } else{
+                    } else {
                         grandParent.color = RED;
                     }
 //                  recheck red red conflicts
@@ -366,18 +368,13 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
 
     @Override
     public int height() {
-        height = 0;
-        height = getHeight(root);
-        return 0;
+        return getHeight(root);
     }
 
     private int getHeight(RBNode<T> node) {
-        if (node != null) {
-            height++;
-            printTree(node.left);
-            printTree(node.right);
-        }
-        return height;
+        if (node == null)
+            return 0;
+        return 1 + Math.max(getHeight(node.left), getHeight(node.right));
     }
 
     public ArrayList<T> inorder() {
@@ -443,7 +440,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
     private void printTree(RBNode<T> node) {
         if (node != null) {
             String color = node.color == RED ? "RED" : "BLACK";
-            System.out.println(node.key +" --> "+ color);
+            System.out.println(node.key + " --> " + color);
             printTree(node.left);
             printTree(node.right);
         }
@@ -454,12 +451,12 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         tree.insert("hi");
         tree.insert("bye");
         tree.insert("yyy");
-        tree.insert("tree");
-        tree.insert("code");
-        tree.insert("dye");
-        tree.insert("g");
-        tree.insert("e");
-        tree.insert("zb");
+        //tree.insert("tree");
+        //tree.insert("code");
+        //tree.insert("dye");
+        //tree.insert("g");
+        //tree.insert("e");
+        //tree.insert("zb");
 //        tree.insert("za");
 //        tree.insert("zz");
 //        tree.insert("s");
@@ -472,6 +469,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
 //        tree.insert("hi");
 //        tree.insert("a");
         tree.printTree(tree.root);
+        System.out.println(tree.height());
 //        tree.delete("bye");
 //        tree.printTree(tree.root);
 //        String key = "bye";

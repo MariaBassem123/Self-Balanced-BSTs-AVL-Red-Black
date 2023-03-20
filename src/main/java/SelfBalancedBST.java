@@ -13,9 +13,6 @@ public interface SelfBalancedBST<T extends Comparable<T>> {
      */
     boolean delete(T key);
 
-    // Takes a key and searches for it returning true if it is found in the tree
-    // and false otherwise.
-
     /**
      * @param key Takes a key and searches for it.
      * @return true if it is found in the tree and false otherwise.
@@ -32,5 +29,8 @@ public interface SelfBalancedBST<T extends Comparable<T>> {
      */
     int height();
 
+    /**
+     * @return list containing inorder traversal of the tree
+     */
     List<T> inorder();
 }
