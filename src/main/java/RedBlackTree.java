@@ -5,7 +5,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
     public static final boolean BLACK = true;
     private RBNode<T> root;
     private int size;
-    int height;
+    private int height;
 
     public RedBlackTree() {
         this.size = 0;
@@ -15,14 +15,10 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
     public RBNode<T> getRoot() {
         return root;
     }
-
-    public void setRoot(RBNode<T> root) {
-        this.root = root;
-    }
-
-    public int getSize() {
-        return size;
-    }
+//
+//    public void setRoot(RBNode<T> root) {
+//        this.root = root;
+//    }
 
     @Override
     public boolean insert(T key) {
@@ -171,6 +167,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
     }
 
     private boolean hasRedChild(RBNode<T> node) {
+
         return (node.left != null && node.left.color == RED) || (node.right != null && node.right.color == RED);
     }
 
@@ -212,10 +209,57 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         if (nodeToDelete != null) {
             size--;
             deleteHelper(nodeToDelete);
+//            System.out.println("In deletee");
+//            printTree(root);
+//            System.out.println("After deletee");
             return true;
         }
         return false;
     }
+
+//    private void deleteHelper(RBNode<T> node) {
+//        boolean deletedNodeColor = node.color;
+//        RBNode<T> successor = node;
+//        RBNode<T> replace = node;
+//        if (hasNoChildren(node)) {//remove leaf node
+//            if (node.parent != null) {//not a root
+//                if (isRightChild(node)) {
+//                    node.parent.right = null;
+//                } else {
+//                    node.parent.left = null;
+//                }
+//            } else {
+//                root = null;
+//            }
+//            replace = null;
+//        }
+//
+//        else if (hasOneChild(node)) {
+//            RBNode<T> child = ((node.right != null) ? node.right : node.left);
+//            child.parent = node.parent;
+//            if (node == root) {
+//                root = child;
+//            } else {
+//                if (isRightChild(node)) {
+//                    node.parent.right = child;
+//                } else {
+//                    node.parent.left = child;
+//                }
+//            }
+//            replace = child;
+//        }
+//
+//        else if (hasTwoChildren(node)) {
+//            successor = getSuccessor(node);
+//            node.key = successor.key;
+//            System.out.println("successor = " + successor.key);
+//            deleteHelper(successor);
+//
+//
+//            return;
+//        }
+//        deleteBalance(node, replace);
+//    }
 
     private void deleteHelper(RBNode<T> node) {
         boolean deletedNodeColor = node.color;
@@ -223,6 +267,8 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         RBNode<T> replace = node;
         if (hasNoChildren(node)) {//remove leaf node
             if (node.parent != null) {//not a root
+                replace = null;
+                deleteBalance(node, replace);
                 if (isRightChild(node)) {
                     node.parent.right = null;
                 } else {
@@ -230,11 +276,12 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
                 }
             } else {
                 root = null;
+                return;
             }
-            replace = null;
+
         }
 
-        if (hasOneChild(node)) {
+        else if (hasOneChild(node)) {
             RBNode<T> child = ((node.right != null) ? node.right : node.left);
             child.parent = node.parent;
             if (node == root) {
@@ -247,15 +294,17 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
                 }
             }
             replace = child;
+            deleteBalance(node, replace);
         }
 
-        if (hasTwoChildren(node)) {
+        else if (hasTwoChildren(node)) {
             successor = getSuccessor(node);
             node.key = successor.key;
             deleteHelper(successor);
+            return;
         }
-        deleteBalance(node, replace);
     }
+
 
     private void deleteBalance(RBNode<T> deleted, RBNode<T> replace) {
         if (root == null) return;//no tree
@@ -266,16 +315,25 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
             replace.color = BLACK;
             System.out.println("u->black, v->red");
         } else {//black black
+            System.out.println("black black");
             if (replace != null) doubleBlack(replace);
-            else doubleBlack(deleted);
+            else{
+                System.out.println("in else");
+                doubleBlack(deleted);
+            }
+
+//            System.out.println("After delete balance");
+//            printTree(root);
+//            System.out.println("*******************");
         }
     }
 
     private void doubleBlack(RBNode<T> x) {
+
         if (x == root) return;
 
         RBNode<T> parent = null;
-        if (x != null) {//not nil =deleted was not a leaf
+        if (x != null) {//not nil = deleted was not a leaf
             parent = x.parent;//node.parent
         }
         RBNode<T> sibling = sibling(x);
@@ -283,13 +341,19 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         if (sibling == null) {
             doubleBlack(parent);
         } else {//sibling exist
+            System.out.println("sibling exist");
+            System.out.println("sibling "+ sibling.key);
             if (sibling.color == BLACK) {
+                System.out.println("sibling = black");
+//                System.out.println("sibling "+ sibling.key);
                 if (hasRedChild(sibling)) {//red cousins
+                    System.out.println("red cousin");
                     if (isLeftChild(sibling)) {//L
                         if (sibling.left != null && sibling.left.color == RED) {//LL
                             sibling.left.color = BLACK;
                             sibling.color = parent.color;
                             rotateRight(parent);
+
                         } else {//LR
                             sibling.right.color = parent.color;
                             rotateLeft(sibling);
@@ -302,6 +366,10 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
                             rotateRight(sibling);
                             rotateLeft(parent);
                         } else {//RR
+                            System.out.println("RR");
+                            printTree(root);
+                            System.out.println("--------------------------------------");
+
                             sibling.right.color = BLACK;
                             sibling.color = parent.color;
                             rotateLeft(parent);
@@ -309,11 +377,16 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
 
                     }
                     parent.color = BLACK;
+                    System.out.println("Print Tree");
+                    printTree(root);
+                    System.out.println("--------------------------------------");
                 } else {// 2black cousins
+                    System.out.println("2 black cousin");
                     sibling.color = RED;
                     if (parent.color == RED) {
                         parent.color = BLACK;
                     } else {
+                        System.out.println("double black parent");
                         doubleBlack(parent);
                     }
                 }
@@ -416,7 +489,7 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         if (temp.parent == null) root = temp;
     }
 
-    public void rotateRight(RBNode<T> node) {
+    private void rotateRight(RBNode<T> node) {
         RBNode<T> temp = node.left;
         if (temp == null) {
             return;
@@ -434,10 +507,9 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
         }
         temp.right = node;
         if (temp.parent == null) root = temp;
-
     }
 
-    private void printTree(RBNode<T> node) {
+    public void printTree(RBNode<T> node) {
         if (node != null) {
             String color = node.color == RED ? "RED" : "BLACK";
             printTree(node.left);
