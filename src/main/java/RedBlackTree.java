@@ -440,23 +440,48 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
     private void printTree(RBNode<T> node) {
         if (node != null) {
             String color = node.color == RED ? "RED" : "BLACK";
-            System.out.println(node.key + " --> " + color);
             printTree(node.left);
+            System.out.println(node.key +" --> "+ color);
             printTree(node.right);
         }
     }
 
     public static void main(String[] args) {
-        RedBlackTree<String> tree = new RedBlackTree<>();
-        tree.insert("hi");
-        tree.insert("bye");
-        tree.insert("yyy");
+
+//        RedBlackTree<String> tree = new RedBlackTree<>();
+//        tree.insert("hi");
+//        tree.insert("bye");
+//        tree.insert("yyy");
         //tree.insert("tree");
         //tree.insert("code");
         //tree.insert("dye");
         //tree.insert("g");
         //tree.insert("e");
         //tree.insert("zb");
+        // trial 1:
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
+        tree.insert(10);
+        tree.insert(18);
+        tree.insert(7);
+        tree.insert(15);
+        tree.insert(16);
+        tree.insert(30);
+        tree.insert(25);
+        tree.insert(40);
+        tree.insert(60);
+//        tree.insert(2);
+//        tree.insert(1);
+//        tree.insert(70);
+//        tree.insert("hi");
+//        tree.insert("bye");
+//        tree.insert("yyy");
+//        tree.insert("tree");
+//        tree.insert("code");
+//        tree.insert("dye");
+//        tree.insert("g");
+//        tree.insert("e");
+//        tree.insert("zb");
+
 //        tree.insert("za");
 //        tree.insert("zz");
 //        tree.insert("s");
@@ -465,11 +490,12 @@ public class RedBlackTree<T extends Comparable<T>> implements SelfBalancedBST<T>
 //        tree.rotateRight(tree.root.right);
 //        System.out.println(" ");
 
+
 //        tree.insert("bye");
 //        tree.insert("hi");
 //        tree.insert("a");
         tree.printTree(tree.root);
-        System.out.println(tree.height());
+        System.out.println("Height = " + tree.height());
 //        tree.delete("bye");
 //        tree.printTree(tree.root);
 //        String key = "bye";
