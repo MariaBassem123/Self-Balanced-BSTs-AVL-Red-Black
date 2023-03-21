@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class Dictionary {
     private SelfBalancedBST<String> tree;
@@ -67,12 +68,65 @@ public class Dictionary {
     }
 
     public static void main(String[] args) {
-        Dictionary d = new Dictionary(new AVLTree<>());
-        d.insert("this");
-        d.insert("me");
-        d.insert("hi");
-        Point p = d.batchDelete("C:\\Users\\cyber\\Desktop\\Self-Balanced-BSTs-AVL-Red-Black\\src\\test\\delete.txt");
-        //  ArrayList<Object> order = d.inorder();
-        System.out.println(p.getX() + " " + p.getY());
+        while(true){
+            Dictionary dic = null;
+            Scanner sc= new Scanner(System.in);
+            System.out.println("Choose tree type\n"+"1) AVL\n" +"2) RB\n"+"3) Exit");
+            int input= sc.nextInt();
+            int operations = 0;
+            if(input == 1){
+                dic = new Dictionary(new AVLTree<>());
+                System.out.println("Choose operation \n"+"1) Insert\n" +"2) Delete\n"+"3) Search\n"+"4) Batch insert\n"+"5) Batch delete\n"+"6) Size\n"+"7) Height\n"+"8) Return to tree selection");
+                operations = sc.nextInt();
+            }else if(input == 2) {
+               dic = new Dictionary(new RedBlackTree<>());
+                System.out.println("Choose operation \n"+"1) Insert\n" +"2) Delete\n"+"3) Search\n"+"4) Batch insert\n"+"5) Batch delete\n"+"6) Size\n"+"7) Height\n"+"8) Return to tree selection");
+                operations = sc.nextInt();
+            }else if(input == 3){
+                break;
+            } else{
+                System.out.println("Invalid input");
+            }
+            sc.nextLine();
+            while (true){
+                if(operations == 1){
+                String str = sc.nextLine();
+                if(dic.insert(str)){
+                    System.out.println("Added successfully");
+                } else {
+                    System.out.println("Already exists");
+                }
+            } else if(operations == 2) {
+                String str = sc.nextLine();
+                if(dic.delete(str)){
+                    System.out.println("Deleted successfully");
+                } else {
+                    System.out.println("Do not exist");
+                }
+            } else if(operations == 3) {
+                String str = sc.nextLine();
+                if (dic.search(str)) {
+                    System.out.println("Word found");
+                } else {
+                    System.out.println("Do not exist");
+                }
+             }else if(operations == 4) {
+              //batch insert
+            } else if(operations == 5) {
+                //batch delete
+            } else if(operations == 6) {
+                System.out.println("Size of the tree : "+ dic.size());
+            } else if(operations == 7) {
+                System.out.println("Size of the tree : "+ dic.height());
+            } else if(operations == 8) {
+                break;
+            } else{
+                    System.out.println("Invalid input");
+                }
+            System.out.println("Choose operation \n"+"1) Insert\n" +"2) Delete\n"+"3) Search\n"+"4) Batch insert\n"+"5) Batch delete\n"+"6) Size\n"+"7) Height\n"+"8) Return to tree selection");
+             operations = sc.nextInt();
+             sc.nextLine();
+            }
+        }
     }
 }
