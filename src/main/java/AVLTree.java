@@ -25,11 +25,9 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
     public boolean delete(T key) {
         boolean check = search(key);
         if (!check) {//the element is not found
-            System.out.println("element not found");
             return false;
         } else {
             root = deleteBST(root, key);
-            System.out.println("element found");
             size -= 1;
             return true;
         }
@@ -198,7 +196,7 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         // Recurse on left subtree
         traverse(root.left);
         // Add node data to sum
-        System.out.println(root.key + " ");
+        System.out.println(root.key + " " + root.height);
         // Recurse on right subtree
         traverse(root.right);
     }

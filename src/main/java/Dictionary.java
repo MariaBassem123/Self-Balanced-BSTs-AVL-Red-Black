@@ -111,9 +111,11 @@ public class Dictionary {
                     System.out.println("Do not exist");
                 }
              }else if(operations == 4) {
-              //batch insert
+                    String str = sc.nextLine();
+                    System.out.println(dic.batchInsert(str));
             } else if(operations == 5) {
-                //batch delete
+                    String str = sc.nextLine();
+                    System.out.println(dic.batchDelete(str));
             } else if(operations == 6) {
                 System.out.println("Size of the tree : "+ dic.size());
             } else if(operations == 7) {
@@ -123,7 +125,7 @@ public class Dictionary {
             } else{
                     System.out.println("Invalid input");
                 }
-            System.out.println("Choose operation \n"+"1) Insert\n" +"2) Delete\n"+"3) Search\n"+"4) Batch insert\n"+"5) Batch delete\n"+"6) Size\n"+"7) Height\n"+"8) Return to tree selection");
+             System.out.println("Choose operation \n"+"1) Insert\n" +"2) Delete\n"+"3) Search\n"+"4) Batch insert\n"+"5) Batch delete\n"+"6) Size\n"+"7) Height\n"+"8) Return to tree selection");
              operations = sc.nextInt();
              sc.nextLine();
             }
