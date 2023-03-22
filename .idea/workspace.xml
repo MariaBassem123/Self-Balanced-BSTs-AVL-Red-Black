@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fb430be8-2687-426f-b9e2-14965ef13586" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/DictionaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DictionaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Dictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/AVLNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AVLNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/AVLTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AVLTree.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Dictionary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Dictionary.class" afterDir="false" />
@@ -69,9 +69,9 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RedBlackTreeTest">
-    <configuration name="RedBlackTree" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="RedBlackTree" />
+  <component name="RunManager" selected="Application.Dictionary">
+    <configuration name="Dictionary" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Dictionary" />
       <module name="Self-Balanced-BSTs-AVL-Red-Black" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
@@ -84,43 +84,43 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RedBlackTreeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AVLTreeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Self-Balanced-BSTs-AVL-Red-Black" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RedBlackTreeTest" />
+      <option name="MAIN_CLASS_NAME" value="AVLTreeTest" />
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RedBlackTreeTest.testDeleteBlack" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AVLTreeTest.DeleteCasesTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Self-Balanced-BSTs-AVL-Red-Black" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RedBlackTreeTest" />
-      <option name="METHOD_NAME" value="testDeleteBlack" />
+      <option name="MAIN_CLASS_NAME" value="AVLTreeTest" />
+      <option name="METHOD_NAME" value="DeleteCasesTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RedBlackTreeTest.testDeleteBlackWithBlackChild" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AVLTreeTest.deleteChildTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Self-Balanced-BSTs-AVL-Red-Black" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RedBlackTreeTest" />
-      <option name="METHOD_NAME" value="testDeleteBlackWithBlackChild" />
+      <option name="MAIN_CLASS_NAME" value="AVLTreeTest" />
+      <option name="METHOD_NAME" value="deleteChildTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RedBlackTreeTest.testDeleteWithOneRedChild" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AVLTreeTest.deleteRootOneChildTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Self-Balanced-BSTs-AVL-Red-Black" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="RedBlackTreeTest" />
-      <option name="METHOD_NAME" value="testDeleteWithOneRedChild" />
+      <option name="MAIN_CLASS_NAME" value="AVLTreeTest" />
+      <option name="METHOD_NAME" value="deleteRootOneChildTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
@@ -145,11 +145,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RedBlackTreeTest" />
-        <item itemvalue="JUnit.RedBlackTreeTest.testDeleteBlack" />
-        <item itemvalue="JUnit.RedBlackTreeTest.testDeleteWithOneRedChild" />
-        <item itemvalue="JUnit.RedBlackTreeTest.testDeleteBlackWithBlackChild" />
-        <item itemvalue="Application.RedBlackTree" />
+        <item itemvalue="Application.Dictionary" />
+        <item itemvalue="JUnit.AVLTreeTest" />
+        <item itemvalue="JUnit.AVLTreeTest.DeleteCasesTest" />
+        <item itemvalue="JUnit.AVLTreeTest.deleteRootOneChildTest" />
+        <item itemvalue="JUnit.AVLTreeTest.deleteChildTest" />
       </list>
     </recent_temporary>
   </component>
