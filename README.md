@@ -10,7 +10,7 @@ An AVL (Adelson-Velskii and Landis) tree is a binary search tree with a balance 
 
 A red black tree is a kind of self-balancing binary search tree in computer science. Each node of the binary tree has an extra bit, and that bit is often interpreted as the color (red or black) of the node. These color bits are used to ensure the tree remains approximately balanced during insertions and deletions. Balance is preserved by painting each node of the tree with one of two colors in a way that satisfies certain properties, which collectively constrain how unbalanced the tree can become in the worst case. When the tree is modified, the new tree is subsequently rearranged (using rotation) and repainted to restore the coloring properties. The properties are designed in such a way that this rearranging and recoloring can be performed efficiently.
 
-## 2. Details
+## 2. Implementation Details
 ### 1. Trees Operations
 
 Both implemented AVL and Red Black trees can deal with keys of any comparable type (generic). Each one provides the following operations:
