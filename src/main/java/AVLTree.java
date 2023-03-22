@@ -8,6 +8,7 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         this.size = 0;
     }
 
+    public AVLNode getRoot(){return root;}
     @Override
     public boolean insert(T key) {
         boolean check = search(key);
@@ -168,7 +169,6 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         int rightHeight = node.right != null ? node.right.height : 0;
         int height = Math.max(leftHeight, rightHeight) + 1;
         node.height = height;
-        System.out.println("key = " + node.key + " - its height = " + height);
     }
 
     private AVLNode<T> BSTInsert(AVLNode<T> node, T key) {
@@ -201,18 +201,11 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
     }
 
     public static void main(String[] args) {
-        AVLTree<Integer> tree = new AVLTree<>();
+        AVLTree tree = new AVLTree<>();
         tree.insert(10);
         tree.insert(8);
         tree.insert(12);
-
         tree.traverse(tree.root);
-
-//        if(tree.search(7)){
-//            System.out.println("YES");
-//        }else{
-//            System.out.println("NO");
-//        }
         tree.delete(10);
         tree.traverse(tree.root);
         System.out.println("the height of the tree " + tree.height());
