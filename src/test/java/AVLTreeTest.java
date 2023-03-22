@@ -40,7 +40,68 @@ public class AVLTreeTest {
         Assert.assertEquals(3, tree.size());
     }
     @Test
-    public void DeleteCasesTest(){
+    public void deleteRootTwoChileTest(){
+        AVLTree tree = new AVLTree<>();
+        tree.insert("musicological");
+        tree.insert("forepast");
+        tree.insert("apple");
+        tree.insert("banana");
+        tree.insert("excommunicating");
+        tree.insert("music");
+        tree.insert("love");
+        tree.insert("institutional");
+        tree.insert("forever");
+        tree.insert("zoo");
+        tree.traverse(tree.getRoot());
+        tree.delete("institutional");//delete root with two child
+        System.out.println("--------------------");
+        tree.traverse(tree.getRoot());
+        ArrayList<String> InorderTraversal = tree.inorder();
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("apple");
+        expected.add("banana");
+        expected.add("excommunicating");
+        expected.add("forepast");
+        expected.add("forever");
+        expected.add("love");
+        expected.add("music");
+        expected.add("musicological");
+        expected.add("zoo");
+        assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
+    }
+    @Test
+    public void deleteRootOneChildTest(){
+        AVLTree tree = new AVLTree<>();
+        tree.insert("musicological");
+        tree.insert("forepast");
+        tree.insert("apple");
+        tree.insert("banana");
+        tree.insert("excommunicating");
+        tree.insert("music");
+        tree.insert("love");
+        tree.insert("institutional");
+        tree.insert("forever");
+        tree.insert("zoo");
+        tree.traverse(tree.getRoot());
+        tree.delete("musicological");//delete root with one child
+        System.out.println("--------------------");
+        tree.traverse(tree.getRoot());
+        ArrayList<String> InorderTraversal = tree.inorder();
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("apple");
+        expected.add("banana");
+        expected.add("excommunicating");
+        expected.add("forepast");
+        expected.add("forever");
+        expected.add("institutional");
+        expected.add("love");
+        expected.add("music");
+        expected.add("zoo");
+        assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
+    }
+
+    @Test
+    public void deleteChildTest(){
         AVLTree tree = new AVLTree<>();
         tree.insert("musicological");
         tree.insert("forepast");
@@ -56,20 +117,16 @@ public class AVLTreeTest {
         tree.delete("apple");//leave deletion
         System.out.println("--------------------");
         tree.traverse(tree.getRoot());
-        tree.delete("musicological");//delete root with one child
-        System.out.println("--------------------");
-        tree.traverse(tree.getRoot());
-        tree.delete("institutional");//delete root with two child
-        System.out.println("--------------------");
-        tree.traverse(tree.getRoot());
         ArrayList<String> InorderTraversal = tree.inorder();
         ArrayList<String> expected = new ArrayList<>();
         expected.add("banana");
         expected.add("excommunicating");
         expected.add("forepast");
         expected.add("forever");
+        expected.add("institutional");
         expected.add("love");
         expected.add("music");
+        expected.add("musicological");
         expected.add("zoo");
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
     }
@@ -165,5 +222,18 @@ public class AVLTreeTest {
         tree.delete(4);
         boolean case1 = tree.search(4);
         Assert.assertEquals(false, case1);
+    }
+    @Test
+    public void traversalTest(){
+        AVLTree tree = new AVLTree<>();
+        tree.insert(3);
+        tree.insert(2);
+        tree.insert(1);
+        ArrayList<Integer> InorderTraversal = tree.inorder();
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(2);
+        expected.add(3);
+        assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
     }
 }
