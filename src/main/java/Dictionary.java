@@ -117,7 +117,7 @@ public class Dictionary {
             } else if(operations == 6) {
                 System.out.println("Size of the tree : "+ dic.size());
             } else if(operations == 7) {
-                System.out.println("Size of the tree : "+ dic.height());
+                System.out.println("Height of the tree : "+ dic.height());
             } else if(operations == 8) {
                 break;
             } else{

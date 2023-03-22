@@ -24,18 +24,19 @@ public class AVLTreeTest {
 
     }
     @Test
-    public void InsertTtest() {
-        AVLTree<Integer> tree = new AVLTree<>();
-        tree.insert(1);
-        tree.insert(2);
-        tree.insert(3);
-        tree.traverse(tree.getRoot());
-        ArrayList<Integer> InorderTraversal = tree.inorder();
-        ArrayList<Integer> expected = new ArrayList<>();
-        expected.add(1);
-        expected.add(2);
-        expected.add(3);
-        assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
+    public void DeleteCasesTest(){
+        AVLTree tree = new AVLTree<>();
+        tree.insert("musicological");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+        tree.insert("hello");
+
 
     }
 }

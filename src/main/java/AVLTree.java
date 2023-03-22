@@ -93,6 +93,9 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
 
     @Override
     public int height() {
+        if(root == null){
+            return 0;
+        }
         return root.height;
     }
 
