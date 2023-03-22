@@ -1,4 +1,5 @@
 # Implementing Self Balanced BSTs (AVL & Red Black)
+![image](https://user-images.githubusercontent.com/73313364/227050268-88c928c8-c2d1-4fc6-b3d9-36e82f17271c.png)
 
 ## 1. Introduction
 ### 1. AVL Tree
