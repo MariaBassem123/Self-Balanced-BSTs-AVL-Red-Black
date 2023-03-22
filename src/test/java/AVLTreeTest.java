@@ -8,7 +8,7 @@ import static org.junit.Assert.assertArrayEquals;
 public class AVLTreeTest {
     @Test
     public void InsertTest() {
-        AVLTree tree = new AVLTree<>();
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("hello");
         tree.insert("this");
         tree.insert("is");
@@ -23,14 +23,15 @@ public class AVLTreeTest {
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
 
     }
+
     @Test
-    public void testInsertDuplicate(){
-        AVLTree tree = new AVLTree<>();
-        Assert.assertEquals(true, tree.insert(10));
-        Assert.assertEquals(true, tree.insert(18));
-        Assert.assertEquals(true, tree.insert(20));
-        Assert.assertEquals(false, tree.insert(10));
-        Assert.assertEquals(false, tree.insert(20));
+    public void testInsertDuplicate() {
+        AVLTree<Integer> tree = new AVLTree<>();
+        Assert.assertTrue(tree.insert(10));
+        Assert.assertTrue(tree.insert(18));
+        Assert.assertTrue(tree.insert(20));
+        Assert.assertFalse(tree.insert(10));
+        Assert.assertFalse(tree.insert(20));
         ArrayList<Integer> InorderTraversal = tree.inorder();
         ArrayList<Integer> expected = new ArrayList<>();
         expected.add(10);
@@ -39,9 +40,10 @@ public class AVLTreeTest {
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
         Assert.assertEquals(3, tree.size());
     }
+
     @Test
-    public void deleteRootTwoChileTest(){
-        AVLTree tree = new AVLTree<>();
+    public void deleteRootTwoChileTest() {
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("musicological");
         tree.insert("forepast");
         tree.insert("apple");
@@ -69,9 +71,10 @@ public class AVLTreeTest {
         expected.add("zoo");
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
     }
+
     @Test
-    public void deleteRootOneChildTest(){
-        AVLTree tree = new AVLTree<>();
+    public void deleteRootOneChildTest() {
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("musicological");
         tree.insert("forepast");
         tree.insert("apple");
@@ -101,8 +104,8 @@ public class AVLTreeTest {
     }
 
     @Test
-    public void deleteChildTest(){
-        AVLTree tree = new AVLTree<>();
+    public void deleteChildTest() {
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("musicological");
         tree.insert("forepast");
         tree.insert("apple");
@@ -130,9 +133,10 @@ public class AVLTreeTest {
         expected.add("zoo");
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
     }
+
     @Test
-    public void testHeight(){
-        AVLTree tree = new AVLTree<>();
+    public void testHeight() {
+        AVLTree<String> tree = new AVLTree<>();
         Assert.assertEquals(0, tree.height());
         tree.insert("alone");
         Assert.assertEquals(1, tree.height());
@@ -143,9 +147,10 @@ public class AVLTreeTest {
         tree.insert("Ballone");
         Assert.assertEquals(3, tree.height());
     }
+
     @Test
-    public void DeleteInsertTest(){
-        AVLTree tree = new AVLTree<>();
+    public void DeleteInsertTest() {
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("musicological");
         tree.insert("forepast");
         tree.insert("apple");
@@ -177,9 +182,10 @@ public class AVLTreeTest {
         expected.add("zoo");
         assertArrayEquals(expected.toArray(), InorderTraversal.toArray());
     }
+
     @Test
-    public void SizeTest(){
-        AVLTree tree = new AVLTree<Integer>();
+    public void SizeTest() {
+        AVLTree<Integer> tree = new AVLTree<>();
         tree.insert(10);
         tree.insert(18);
         tree.insert(7);
@@ -187,15 +193,17 @@ public class AVLTreeTest {
         tree.insert(16);
         Assert.assertEquals(5, tree.size());
     }
+
     @Test
-    public void EmptyTest(){
-        AVLTree tree = new AVLTree<String>();
+    public void EmptyTest() {
+        AVLTree<String> tree = new AVLTree<>();
         Assert.assertEquals(0, tree.height());
         Assert.assertEquals(0, tree.size());
     }
+
     @Test
-    public void SearchTest(){
-        AVLTree tree = new AVLTree();
+    public void SearchTest() {
+        AVLTree<String> tree = new AVLTree<>();
         tree.insert("Hello");
         tree.insert("I");
         tree.insert("am");
@@ -204,16 +212,17 @@ public class AVLTreeTest {
         tree.insert("student");
 
         boolean case1 = tree.search("hello");
-        Assert.assertEquals(false, case1);
+        Assert.assertFalse(case1);
 
         boolean case2 = tree.search("Hello");
-        Assert.assertEquals(true, case2);
+        Assert.assertTrue(case2);
 
         boolean case3 = tree.search("Hi");
-        Assert.assertEquals(false, case3);
+        Assert.assertFalse(case3);
     }
+
     @Test
-    public void searchDeletedElementTest(){
+    public void searchDeletedElementTest() {
         AVLTree<Integer> tree = new AVLTree<>();
         tree.insert(3);
         tree.insert(2);
@@ -221,11 +230,12 @@ public class AVLTreeTest {
         tree.insert(4);
         tree.delete(4);
         boolean case1 = tree.search(4);
-        Assert.assertEquals(false, case1);
+        Assert.assertFalse(case1);
     }
+
     @Test
-    public void traversalTest(){
-        AVLTree tree = new AVLTree<>();
+    public void traversalTest() {
+        AVLTree<Integer> tree = new AVLTree<>();
         tree.insert(3);
         tree.insert(2);
         tree.insert(1);
