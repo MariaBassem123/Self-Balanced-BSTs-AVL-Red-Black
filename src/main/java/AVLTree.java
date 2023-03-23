@@ -202,17 +202,5 @@ public class AVLTree<T extends Comparable<T>> implements SelfBalancedBST<T> {
         // Recurse on right subtree
         traverse(root.right);
     }
-
-    public static void main(String[] args) {
-        AVLTree<Integer> tree = new AVLTree<>();
-        tree.insert(10);
-        tree.insert(8);
-        tree.insert(12);
-        tree.traverse(tree.root);
-        tree.delete(10);
-        tree.traverse(tree.root);
-        System.out.println("the height of the tree " + tree.height());
-        System.out.println("size of tree " + tree.size());
-    }
 }
 
